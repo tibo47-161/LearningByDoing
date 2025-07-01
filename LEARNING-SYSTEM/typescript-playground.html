@@ -6,37 +6,47 @@
   <title>TypeScript Playground – Immersiv & ADHS-freundlich</title>
   <style>
     body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
-    .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
     h1 { text-align: center; }
     .task-list { margin-bottom: 2rem; }
-    .task { background: #e3f2fd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-    .active { border: 2px solid #2196f3; }
+    .task { background: #b3e5fc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .active { border: 2px solid #0288d1; }
     .info-box { background: #fffde7; border-left: 4px solid #ffd600; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
-    .editor { width: 100%; min-height: 80px; font-family: monospace; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; }
-    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; }
-    .btn { background: #2196f3; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; margin-right: 0.5rem; }
-    .btn:active { background: #1565c0; }
-    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; }
-    .progress { margin: 1rem 0; }
-    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 1px solid #2196f3; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; }
+    .editor { width: 100%; min-height: 100px; font-family: monospace; font-size: 1.1rem; border-radius: 6px; border: 2px solid #0288d1; padding: 0.5rem; outline: none; transition: border 0.2s; }
+    .editor:focus { border: 2px solid #ff9800; box-shadow: 0 0 0 2px #ffd60055; }
+    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; font-size: 1.1rem; }
+    .btn { background: #0288d1; color: #fff; border: none; border-radius: 6px; padding: 0.7rem 1.5rem; font-size: 1.1rem; cursor: pointer; margin-right: 0.5rem; margin-top: 0.5rem; transition: background 0.2s, box-shadow 0.2s; outline: none; }
+    .btn:focus { background: #ff9800; box-shadow: 0 0 0 2px #ffd60055; }
+    .btn:active { background: #01579b; }
+    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; font-size: 1.05rem; }
+    .progress { margin: 1rem 0; font-weight: bold; }
+    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 2px solid #0288d1; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; font-size: 1rem; transition: border 0.2s; }
+    .focus-mode:focus { border: 2px solid #ff9800; }
     .hidden { display: none; }
+    @media (max-width: 600px) {
+      .container { padding: 0.5rem; }
+      h1 { font-size: 1.3rem; }
+      .btn { width: 100%; margin-bottom: 0.5rem; }
+      .editor { font-size: 1rem; }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/typescript@5.4.5/lib/typescript.js"></script>
+  <script type="module" src="./react-learning/playground-utils.js"></script>
 </head>
 <body>
-  <button class="focus-mode" onclick="toggleFocus()">Fokusmodus: <span id="focus-status">Aus</span></button>
-  <div class="container">
-    <h1>TypeScript Playground</h1>
-    <div class="progress">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">2</span></div>
-    <div class="task-list" id="task-list"></div>
-    <div class="info-box" id="info-box"></div>
-    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen TypeScript-Code..."></textarea>
+  <button class="focus-mode" onclick="toggleFocus()" aria-pressed="false" aria-label="Fokusmodus umschalten">Fokusmodus: <span id="focus-status">Aus</span></button>
+  <div class="container" role="main">
+    <h1 tabIndex="0">TypeScript Playground</h1>
+    <div class="progress" aria-live="polite">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">10</span></div>
+    <div class="task-list" id="task-list" aria-label="Aufgabenstellung"></div>
+    <div class="info-box" id="info-box" aria-label="Hinweis"></div>
+    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen TypeScript-Code..." aria-label="TypeScript Editor"></textarea>
     <div>
-      <button class="btn" onclick="runTS()">Ausführen</button>
-      <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
-      <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
+      <button class="btn" onclick="runTS()" aria-label="TypeScript ausführen">Ausführen</button>
+      <button class="btn" onclick="showSolution()" aria-label="Lösung anzeigen">Lösung anzeigen</button>
+      <button class="btn" onclick="nextTask()" aria-label="Nächste Aufgabe">Nächste Aufgabe</button>
     </div>
-    <div class="output" id="output"></div>
+    <div class="output" id="output" aria-live="polite"></div>
     <div class="solution" id="solution"></div>
   </div>
   <script>
@@ -155,16 +165,21 @@
         if (!result) {
           result = logs.length ? logs.map(l => `<div>${l}</div>`).join('') : 'Kein Output.';
         }
-        // Feedback
-        if (tasks[currentTask].check(jsCode)) {
-          result += '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
-        } else {
-          result += '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!</div>';
-        }
       } catch (e) {
         result = '<span style="color:red;">Fehler: ' + e.message + '</span>';
       }
       document.getElementById('output').innerHTML = result;
+      // Feedback-Logik ausgelagert:
+      import('./react-learning/playground-utils.js').then(mod => {
+        mod.checkAndFeedback(
+          jsCode,
+          tasks[currentTask].check,
+          document.getElementById('output'),
+          document.getElementById('info-box'),
+          'Richtig! Super gemacht!',
+          'Noch nicht ganz richtig.'
+        );
+      });
     }
     function toggleFocus() {
       const c = document.querySelector('.container');

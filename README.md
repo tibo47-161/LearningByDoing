@@ -93,7 +93,7 @@ Neben den interaktiven Playgrounds gibt es klassische Moduldateien, die als Übu
    cd LearningByDoing
    ```
 2. **(Optional) Live Server für Playgrounds:**
-   - Installiere die VS Code Extension „Live Server“ oder nutze einen beliebigen lokalen Webserver.
+   - Installiere die VS Code Extension "Live Server" oder nutze einen beliebigen lokalen Webserver.
    - Alternativ: Öffne die HTML-Dateien direkt im Browser (Doppelklick).
 3. **Python-Terminal-Modul:**
    - Stelle sicher, dass Python installiert ist (`python --version`).
@@ -104,18 +104,66 @@ Neben den interaktiven Playgrounds gibt es klassische Moduldateien, die als Übu
 ### Interaktiver Playground (z.B. TypeScript)
 1. Öffne `LEARNING-SYSTEM/typescript-playground.html` im Browser.
 2. Wähle eine Aufgabe aus, schreibe deinen TypeScript-Code in den Editor.
-3. Klicke auf „Ausführen“ und erhalte sofort Feedback.
-4. Klicke auf „Lösung anzeigen“, wenn du nicht weiterkommst.
+3. Klicke auf "Ausführen" und erhalte sofort Feedback.
+4. Klicke auf "Lösung anzeigen", wenn du nicht weiterkommst.
 
 ### Klassische Moduldatei (z.B. Java)
 1. Öffne `java/basics/JavaBasics.java` in deiner IDE (z.B. IntelliJ, Eclipse).
 2. Lies die Aufgabenstellung im Code und schreibe deine Lösung in die vorgesehenen Bereiche.
 3. Führe das Programm in der IDE aus, um deine Lösung zu testen.
 
-## Screenshots (Platzhalter)
+## Screenshots & Beispiele
 
-> Hier kannst du eigene Screenshots der Playgrounds und Module einfügen, z.B.:
->
+Um einen Eindruck der Playgrounds zu vermitteln, können Screenshots in diesen Abschnitt eingefügt werden. Beispiel:
+
+> ![React Playground Screenshot](./docs/screenshots/react-playground.png)
 > ![TypeScript Playground Screenshot](./docs/screenshots/typescript-playground.png)
-> ![SQL Playground Screenshot](./docs/screenshots/sql-playground.png)
-> ![Java Modul Screenshot](./docs/screenshots/java-basics.png) 
+
+Die Playgrounds bieten:
+- Sofortiges, motivierendes Feedback (z.B. "✅ Richtig! Super gemacht!" oder "❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!")
+- Barrierefreiheit durch hohe Kontraste, Fokus-Indikatoren, ARIA-Labels, Tastaturbedienung und responsives Layout
+
+## Barrierefreiheit & Design
+
+Die Playgrounds sind so gestaltet, dass sie möglichst barrierearm und ADHS-freundlich sind:
+- Hohe Farbkontraste für bessere Lesbarkeit
+- Deutliche Fokus-Indikatoren für alle interaktiven Elemente
+- ARIA-Labels für Screenreader und bessere Navigation
+- Alle Funktionen sind per Tastatur (Tab, Enter) bedienbar
+- Responsives Layout für Desktop und Mobilgeräte
+- Große, gut erreichbare Buttons
+- Klare, gut lesbare Schrift und ausreichend Abstand
+
+## Barrierefreiheit – Details
+
+Die Playgrounds sind so gestaltet, dass sie möglichst barrierearm und ADHS-freundlich sind. Beispiele:
+- **Hohe Farbkontraste:** Buttons und aktive Aufgaben sind deutlich hervorgehoben
+- **Fokus-Indikatoren:** Alle interaktiven Elemente zeigen beim Tabben einen klaren Fokus-Rahmen
+- **ARIA-Labels:** Wichtige Bereiche und Buttons sind für Screenreader ausgezeichnet
+- **Tastaturbedienung:** Alle Funktionen sind per Tab und Enter erreichbar
+- **Responsives Layout:** Auch auf Mobilgeräten gut bedienbar
+
+**Geplante Weiterentwicklung:**
+- Zusätzliche Tastatur-Shortcuts für noch schnellere Bedienung
+- Weitere Screenreader-Optimierungen (z.B. Live-Regions für Feedback)
+
+## Automatisierte Playground-Validierung
+
+Jeder Playground prüft die eingegebenen Lösungen automatisch und gibt direkt Feedback:
+- ✅ Richtig: Aufgabe korrekt gelöst, motivierende Rückmeldung
+- ❌ Noch nicht ganz richtig: Hinweise und Tipps aus der Info-Box
+- Fehler im Code werden farblich hervorgehoben
+- Lösungen können auf Wunsch angezeigt werden
+- Fortschritt wird angezeigt
+
+## Modularisierung der Playground-Logik
+
+Die Aufgaben-Check- und Feedback-Logik ist jetzt als zentrales Modul (`playground-utils.js`) implementiert und wird von allen Playgrounds (HTML, CSS, JS, Python, TypeScript, Java, SQL, React) genutzt. Das sorgt für:
+- Einheitliches, motivierendes Feedback in allen Modulen
+- Leichte Wartbarkeit und Erweiterbarkeit (z.B. für neue Features wie Fortschrittsspeicherung, Accessibility-Checks, weitere Feedback-Varianten)
+- Weniger Redundanz im Code
+
+## Ausblick: Java im Browser & Modularisierung
+
+- Die Ausführung von Java-Code im Browser (z.B. mit TeaVM) ist in Planung, um ein noch immersiveres Lernerlebnis zu bieten.
+- Die Playground-Logik wird weiter modularisiert (z.B. als npm-Paket), um Wiederverwendbarkeit und Wartbarkeit zu erhöhen. 

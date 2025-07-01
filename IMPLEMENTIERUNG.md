@@ -47,4 +47,34 @@
   - Lies die Info-Boxen und Aufgabenstellung
   - Schreibe deine Lösung direkt in die vorgesehenen Bereiche
   - Arbeite die Aufgaben von oben nach unten durch
-- Das Template ist didaktisch aufgebaut und deckt alle prüfungsrelevanten Grundlagen ab. 
+- Das Template ist didaktisch aufgebaut und deckt alle prüfungsrelevanten Grundlagen ab.
+
+## Barrierefreiheit & Design
+
+- Farbkontraste und Fokus-Indikatoren wurden für alle Playgrounds erhöht.
+- ARIA-Labels und Rollen für Screenreader ergänzt.
+- Alle Buttons und Editoren sind per Tastatur erreichbar und bedienbar.
+- Layout ist responsiv und für Mobilgeräte optimiert.
+- Buttons und Schriftgrößen wurden vergrößert.
+
+## Automatisierte Playground-Validierung
+
+- Jede Aufgabe wird automatisch geprüft (Check-Funktion pro Aufgabe).
+- Feedback erfolgt sofort, inkl. motivierender Rückmeldungen und Tipps.
+- Fehler werden farblich hervorgehoben.
+- Lösungen und Fortschritt jederzeit sichtbar.
+
+## Screenshots & Beispiele
+
+Screenshots der Playgrounds können im Ordner `docs/screenshots/` abgelegt und in die README eingebunden werden. Beispiel:
+
+> ![SQL Playground Screenshot](./docs/screenshots/sql-playground.png)
+
+Die Playgrounds bieten:
+- Sofortiges, motivierendes Feedback (z.B. "✅ Richtig! Super gemacht!" oder "❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!")
+- Barrierefreiheit durch hohe Kontraste, Fokus-Indikatoren, ARIA-Labels, Tastaturbedienung und responsives Layout
+
+## Ausblick: Java im Browser & Modularisierung
+
+- Java-Ausführung im Browser (z.B. mit TeaVM) ist geplant.
+- Playground-Logik wird als Modul/NPM-Paket vorbereitet. 

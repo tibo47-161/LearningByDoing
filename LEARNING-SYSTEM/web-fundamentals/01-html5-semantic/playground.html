@@ -7,158 +7,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: #f9fafb;
-      color: #222;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-    }
-    .challenge-list {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-    .challenge-btn {
-      background: #e0e7ff;
-      color: #3730a3;
-      border: none;
-      border-radius: 6px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .challenge-btn.active, .challenge-btn:hover {
-      background: #6366f1;
-      color: #fff;
-    }
-    .challenge-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .challenge-desc {
-      color: #555;
-      margin-bottom: 1.5rem;
-    }
-    .playground {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    .editor, .preview {
-      flex: 1 1 400px;
-      min-width: 350px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      padding: 1rem;
-      margin-bottom: 2rem;
-    }
-    .editor label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .editor textarea {
-      width: 100%;
-      min-height: 180px;
-      font-family: 'Fira Mono', 'Consolas', monospace;
-      font-size: 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      background: #f3f4f6;
-      resize: vertical;
-      transition: border 0.2s;
-    }
-    .editor textarea:focus {
-      border-color: #6366f1;
-      outline: none;
-    }
-    .editor .run-btn {
-      background: #6366f1;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-right: 1rem;
-    }
-    .editor .run-btn:hover {
-      background: #3730a3;
-    }
-    .editor .reset-btn {
-      background: #e5e7eb;
-      color: #222;
-      border: none;
-      border-radius: 6px;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .editor .reset-btn:hover {
-      background: #d1d5db;
-    }
-    .editor .solution-btn {
-      background: #e0e7ff;
-      color: #3730a3;
-      border: none;
-      border-radius: 6px;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .editor .solution-btn:hover {
-      background: #6366f1;
-      color: #fff;
-    }
-    .preview {
-      background: #f3f4f6;
-      border: 1px solid #e5e7eb;
-      min-height: 220px;
-      position: relative;
-    }
-    .feedback {
-      margin-top: 1rem;
-      font-weight: 600;
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-      display: inline-block;
-    }
-    .feedback.success {
-      background: #d1fae5;
-      color: #047857;
-    }
-    .feedback.error {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-    @media (max-width: 900px) {
-      .playground { flex-direction: column; }
+    body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
+    .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    h1 { text-align: center; }
+    .challenge-list { margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .challenge-btn { background: #6366f1; color: #fff; border: none; border-radius: 6px; padding: 0.7rem 1.5rem; font-size: 1.1rem; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; outline: none; }
+    .challenge-btn.active, .challenge-btn:focus { background: #ff9800; box-shadow: 0 0 0 2px #ffd60055; }
+    .challenge-btn:active { background: #4f46e5; }
+    .editor label { font-weight: bold; margin-top: 0.5rem; display: block; }
+    .editor textarea { width: 100%; min-height: 60px; font-family: monospace; font-size: 1.1rem; border-radius: 6px; border: 2px solid #6366f1; padding: 0.5rem; outline: none; transition: border 0.2s; margin-bottom: 0.5rem; }
+    .editor textarea:focus { border: 2px solid #ff9800; box-shadow: 0 0 0 2px #ffd60055; }
+    .run-btn, .reset-btn, .solution-btn { background: #6366f1; color: #fff; border: none; border-radius: 6px; padding: 0.7rem 1.5rem; font-size: 1.1rem; cursor: pointer; margin-right: 0.5rem; margin-top: 0.5rem; transition: background 0.2s, box-shadow 0.2s; outline: none; }
+    .run-btn:focus, .reset-btn:focus, .solution-btn:focus { background: #ff9800; box-shadow: 0 0 0 2px #ffd60055; }
+    .run-btn:active, .reset-btn:active, .solution-btn:active { background: #4f46e5; }
+    .preview { margin-top: 1rem; background: #f1f8e9; border-radius: 6px; padding: 1rem; }
+    .feedback { font-weight: bold; margin-top: 0.5rem; display: block; }
+    .feedback.success { color: #388e3c; }
+    .feedback.error { color: #e65100; }
+    @media (max-width: 600px) {
+      .container { padding: 0.5rem; }
+      h1 { font-size: 1.3rem; }
+      .challenge-btn, .run-btn, .reset-btn, .solution-btn { width: 100%; margin-bottom: 0.5rem; }
+      .editor textarea { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1 style="font-size:2rem;font-weight:700;margin-bottom:1rem;">Web Playground <span style="color:#6366f1;">Learning by Doing</span></h1>
-    <div class="challenge-list" id="challenge-list"></div>
-    <div id="challenge-area">
-      <!-- Challenge content will be injected here -->
-    </div>
+  <div class="container" role="main">
+    <h1 tabIndex="0">Web Playground <span style="color:#6366f1;">Learning by Doing</span></h1>
+    <div class="challenge-list" id="challenge-list" aria-label="Aufgabenliste"></div>
+    <div id="challenge-area" aria-label="Aufgabenbereich"></div>
   </div>
+  <script type="module" src="../../../react-learning/playground-utils.js"></script>
   <script>
     // --- Challenge Definitions ---
     const challenges = [
@@ -434,12 +314,22 @@
         previewFrame.srcdoc = code;
       }
       function checkSolution() {
-        const code = textarea.value;
+        const html = textarea.value;
         let ok = false;
         try {
-          ok = ch.test(code);
+          ok = ch.test(html);
         } catch(e) { ok = false; }
-        feedback.innerHTML = `<span class="feedback ${ok ? 'success' : 'error'}">${ok ? ch.feedback.success : ch.feedback.error}</span>`;
+        // Feedback-Logik ausgelagert:
+        import('../../../react-learning/playground-utils.js').then(mod => {
+          mod.checkAndFeedback(
+            ok ? 'ok' : '',
+            () => ok,
+            feedback,
+            challengeArea,
+            ch.feedback.success,
+            ch.feedback.error
+          );
+        });
         if(ok) {
           feedback.scrollIntoView({behavior:'smooth',block:'center'});
         }
