@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind CSS - Utility-First Learning</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#fdf4ff',
+                            100: '#fae8ff',
+                            200: '#f5d0fe',
+                            300: '#f0abfc',
+                            400: '#e879f9',
+                            500: '#d946ef',
+                            600: '#c026d3',
+                            700: '#a21caf',
+                            800: '#86198f',
+                            900: '#701a75',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'mono': ['Fira Code', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            },
+            plugins: [],
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 antialiased">
+    <!-- Skip Link -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-md z-50">
+        Skip to main content
+    </a>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-palette text-white text-sm"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-900">Tailwind CSS Learning</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#utilities" class="text-gray-500 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Utilities
+                    </a>
+                    <a href="#components" class="text-gray-500 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Components
+                    </a>
+                    <a href="#responsive" class="text-gray-500 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Responsive
+                    </a>
+                    <a href="#dark-mode" class="text-gray-500 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Dark Mode
+                    </a>
+                </nav>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 text-gray-500 hover:text-primary-600 rounded-md transition-colors">
+                    <i class="fas fa-moon text-lg"></i>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 text-gray-500 hover:text-primary-600 rounded-md transition-colors">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#utilities" class="block px-3 py-2 text-gray-500 hover:text-primary-600 rounded-md text-base font-medium transition-colors">
+                    Utilities
+                </a>
+                <a href="#components" class="block px-3 py-2 text-gray-500 hover:text-primary-600 rounded-md text-base font-medium transition-colors">
+                    Components
+                </a>
+                <a href="#responsive" class="block px-3 py-2 text-gray-500 hover:text-primary-600 rounded-md text-base font-medium transition-colors">
+                    Responsive
+                </a>
+                <a href="#dark-mode" class="block px-3 py-2 text-gray-500 hover:text-primary-600 rounded-md text-base font-medium transition-colors">
+                    Dark Mode
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    Utility-First CSS Framework
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+                        Tailwind CSS
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                    Lerne Tailwind CSS von Grund auf - von einfachen Utilities bis hin zu komplexen Komponenten. 
+                    Entdecke die Kraft des utility-first Ansatzes für moderne Webentwicklung.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 transform hover:scale-105">
+                        <i class="fas fa-play mr-2"></i>
+                        Lernen starten
+                    </button>
+                    <button class="border border-gray-300 hover:border-primary-600 text-gray-700 hover:text-primary-600 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+                        <i class="fas fa-book mr-2"></i>
+                        Dokumentation
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Utilities Section -->
+        <section id="utilities" class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Utility Classes</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Tailwind CSS bietet hunderte von Utility-Klassen für Spacing, Farben, Typografie, Layout und mehr.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Spacing Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-arrows-alt text-primary-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Spacing</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Konsistente Abstände mit m-*, p-*, space-* Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">m-4 p-6</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">space-x-4 space-y-2</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">gap-6</div>
+                    </div>
+                </div>
+
+                <!-- Color Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-palette text-secondary-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Colors</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Umfangreiche Farbpalette mit text-*, bg-*, border-* Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">text-blue-600</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">bg-gradient-to-r</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">border-red-500</div>
+                    </div>
+                </div>
+
+                <!-- Typography Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-font text-green-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Typography</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Text-Styling mit text-*, font-*, leading-* Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">text-2xl font-bold</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">text-center leading-relaxed</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">uppercase tracking-wide</div>
+                    </div>
+                </div>
+
+                <!-- Layout Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-th-large text-purple-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Layout</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Flexbox und Grid Layout mit flex, grid, container Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">flex items-center</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">grid grid-cols-3</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">container mx-auto</div>
+                    </div>
+                </div>
+
+                <!-- Border Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-square text-yellow-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Borders</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Border-Styling mit border-*, rounded-* Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">border-2 border-gray-300</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">rounded-lg rounded-t-xl</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">shadow-lg</div>
+                    </div>
+                </div>
+
+                <!-- Effects Utilities -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-magic text-red-600"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Effects</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">Transformationen und Effekte mit transform, filter Klassen</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">hover:scale-105</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">transition-all duration-300</div>
+                        <div class="bg-gray-100 p-2 rounded text-sm font-mono">backdrop-blur-sm</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Examples -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Interaktive Beispiele</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Experimentiere mit verschiedenen Utility-Kombinationen und sieh die Ergebnisse in Echtzeit.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Live Editor -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Live Editor</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                            <select id="bg-color" class="w-full p-2 border border-gray-300 rounded-md">
+                                <option value="bg-blue-500">Blue</option>
+                                <option value="bg-green-500">Green</option>
+                                <option value="bg-red-500">Red</option>
+                                <option value="bg-yellow-500">Yellow</option>
+                                <option value="bg-purple-500">Purple</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
+                            <select id="text-color" class="w-full p-2 border border-gray-300 rounded-md">
+                                <option value="text-white">White</option>
+                                <option value="text-black">Black</option>
+                                <option value="text-gray-800">Gray</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Padding</label>
+                            <select id="padding" class="w-full p-2 border border-gray-300 rounded-md">
+                                <option value="p-2">Small (p-2)</option>
+                                <option value="p-4">Medium (p-4)</option>
+                                <option value="p-6">Large (p-6)</option>
+                                <option value="p-8">Extra Large (p-8)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Border Radius</label>
+                            <select id="border-radius" class="w-full p-2 border border-gray-300 rounded-md">
+                                <option value="rounded-none">None</option>
+                                <option value="rounded">Small</option>
+                                <option value="rounded-lg">Medium</option>
+                                <option value="rounded-xl">Large</option>
+                                <option value="rounded-full">Full</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Preview</h4>
+                    <div id="preview" class="bg-blue-500 text-white p-4 rounded-lg transition-all duration-300 min-h-[200px] flex items-center justify-center">
+                        <p class="text-center">Experimentiere mit den Einstellungen!</p>
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-100 rounded-md">
+                        <p class="text-sm font-mono text-gray-700">
+                            Classes: <span id="classes-display">bg-blue-500 text-white p-4 rounded-lg</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Vorgefertigte Komponenten</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Häufig verwendete UI-Komponenten, die du als Basis für deine eigenen Designs verwenden kannst.
+                </p>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Buttons -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-900 mb-6">Buttons</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 transform hover:scale-105">
+                            Primary Button
+                        </button>
+                        <button class="bg-secondary-600 hover:bg-secondary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 transform hover:scale-105">
+                            Secondary Button
+                        </button>
+                        <button class="border border-gray-300 hover:border-primary-600 text-gray-700 hover:text-primary-600 px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                            Outline Button
+                        </button>
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                            Danger Button
+                        </button>
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                            Success Button
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-900 mb-6">Cards</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            <div class="h-48 bg-gradient-to-br from-primary-500 to-secondary-500"></div>
+                            <div class="p-6">
+                                <h5 class="text-xl font-semibold text-gray-900 mb-2">Card Title</h5>
+                                <p class="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+                                <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                    Read More
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            <div class="h-48 bg-gradient-to-br from-green-500 to-blue-500"></div>
+                            <div class="p-6">
+                                <h5 class="text-xl font-semibold text-gray-900 mb-2">Another Card</h5>
+                                <p class="text-gray-600 mb-4">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+                                <button class="bg-secondary-600 hover:bg-secondary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                    Learn More
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-500"></div>
+                            <div class="p-6">
+                                <h5 class="text-xl font-semibold text-gray-900 mb-2">Third Card</h5>
+                                <p class="text-gray-600 mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p>
+                                <button class="border border-gray-300 hover:border-primary-600 text-gray-700 hover:text-primary-600 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                    Explore
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forms -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-gray-900 mb-6">Forms</h4>
+                    <div class="max-w-md mx-auto">
+                        <form class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200" placeholder="Enter your name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200" placeholder="Enter your email">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200" placeholder="Enter your message"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-lg font-semibold transition-colors duration-200">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Responsive Design Section -->
+        <section id="responsive" class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Responsive Design</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Tailwind CSS macht responsive Design einfach mit Breakpoint-Präfixen wie sm:, md:, lg:, xl:.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-blue-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
+                        <p class="text-sm text-blue-800">Mobile First</p>
+                        <p class="text-xs text-blue-600">1 Column</p>
+                    </div>
+                    <div class="bg-green-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-green-600 mb-2">2</div>
+                        <p class="text-sm text-green-800">Small (sm:)</p>
+                        <p class="text-xs text-green-600">2 Columns</p>
+                    </div>
+                    <div class="bg-yellow-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">4</div>
+                        <p class="text-sm text-yellow-800">Large (lg:)</p>
+                        <p class="text-xs text-yellow-600">4 Columns</p>
+                    </div>
+                    <div class="bg-purple-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-purple-600 mb-2">4</div>
+                        <p class="text-sm text-purple-800">Extra Large</p>
+                        <p class="text-xs text-purple-600">4 Columns</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-gray-100 rounded-lg">
+                    <p class="text-sm text-gray-700">
+                        <strong>Responsive Classes:</strong> 
+                        <code class="bg-gray-200 px-2 py-1 rounded text-sm">grid-cols-1 sm:grid-cols-2 lg:grid-cols-4</code>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dark Mode Section -->
+        <section id="dark-mode" class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Dark Mode</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Tailwind CSS unterstützt automatischen Dark Mode mit dem dark: Präfix.
+                </p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 transition-colors duration-300">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Dark Mode Features</h4>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Automatische Erkennung der Systemeinstellung
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Einfache Umschaltung mit JavaScript
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Konsistente Farbpalette
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                Smooth Transitions
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Code Example</h4>
+                        <div class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm">
+                            <div class="text-green-400">// Dark mode classes</div>
+                            <div class="text-blue-400">bg-white</div>
+                            <div class="text-blue-400">dark:bg-gray-800</div>
+                            <div class="text-blue-400">text-gray-900</div>
+                            <div class="text-blue-400">dark:text-white</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Tailwind CSS Quiz</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Teste dein Wissen über Tailwind CSS Utility-Klassen!
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-8 max-w-2xl mx-auto">
+                <div id="quiz-container">
+                    <div class="text-center mb-8">
+                        <div class="text-2xl font-bold text-primary-600 mb-2">Frage 1 von 5</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-primary-600 h-2 rounded-full" style="width: 20%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-gray-900 mb-6">
+                            Welche Utility-Klasse wird für horizontale Abstände verwendet?
+                        </h4>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="quiz" value="0" class="mr-3">
+                                <span>mx-4</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="quiz" value="1" class="mr-3">
+                                <span>my-4</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="quiz" value="2" class="mr-3">
+                                <span>mt-4</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="quiz" value="3" class="mr-3">
+                                <span>mb-4</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button id="submit-quiz" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+                            Antwort prüfen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Tailwind CSS Learning</h5>
+                    <p class="text-gray-400">
+                        Ein umfassendes Lernsystem für moderne Webentwicklung mit Tailwind CSS.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Quick Links</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#utilities" class="hover:text-white transition-colors">Utilities</a></li>
+                        <li><a href="#components" class="hover:text-white transition-colors">Components</a></li>
+                        <li><a href="#responsive" class="hover:text-white transition-colors">Responsive</a></li>
+                        <li><a href="#dark-mode" class="hover:text-white transition-colors">Dark Mode</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Resources</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="https://tailwindui.com/" target="_blank" rel="noopener" class="hover:text-white transition-colors">Tailwind UI</a></li>
+                        <li><a href="https://tailwindcomponents.com/" target="_blank" rel="noopener" class="hover:text-white transition-colors">Components</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Tailwind CSS Learning System. Erstellt für Lernzwecke.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const icon = themeToggle.querySelector('i');
+            if (html.classList.contains('dark')) {
+                icon.className = 'fas fa-sun text-lg';
+            } else {
+                icon.className = 'fas fa-moon text-lg';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Live Editor
+        const bgColorSelect = document.getElementById('bg-color');
+        const textColorSelect = document.getElementById('text-color');
+        const paddingSelect = document.getElementById('padding');
+        const borderRadiusSelect = document.getElementById('border-radius');
+        const preview = document.getElementById('preview');
+        const classesDisplay = document.getElementById('classes-display');
+
+        function updatePreview() {
+            const bgColor = bgColorSelect.value;
+            const textColor = textColorSelect.value;
+            const padding = paddingSelect.value;
+            const borderRadius = borderRadiusSelect.value;
+            
+            const classes = `${bgColor} ${textColor} ${padding} ${borderRadius}`;
+            
+            preview.className = `${classes} transition-all duration-300 min-h-[200px] flex items-center justify-center`;
+            classesDisplay.textContent = classes;
+        }
+
+        bgColorSelect.addEventListener('change', updatePreview);
+        textColorSelect.addEventListener('change', updatePreview);
+        paddingSelect.addEventListener('change', updatePreview);
+        borderRadiusSelect.addEventListener('change', updatePreview);
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Quiz Functionality
+        const submitQuiz = document.getElementById('submit-quiz');
+        let currentQuestion = 0;
+        let score = 0;
+        
+        const questions = [
+            {
+                question: "Welche Utility-Klasse wird für horizontale Abstände verwendet?",
+                options: ["mx-4", "my-4", "mt-4", "mb-4"],
+                correct: 0
+            },
+            {
+                question: "Welche Klasse wird für große Bildschirme verwendet?",
+                options: ["sm:", "md:", "lg:", "xl:"],
+                correct: 2
+            },
+            {
+                question: "Welche Klasse macht Text zentriert?",
+                options: ["text-center", "text-left", "text-right", "text-justify"],
+                correct: 0
+            },
+            {
+                question: "Welche Klasse erstellt einen blauen Hintergrund?",
+                options: ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-yellow-500"],
+                correct: 1
+            },
+            {
+                question: "Welche Klasse erstellt abgerundete Ecken?",
+                options: ["rounded", "border", "shadow", "p-4"],
+                correct: 0
+            }
+        ];
+
+        function showQuestion(questionIndex) {
+            const question = questions[questionIndex];
+            const quizContainer = document.getElementById('quiz-container');
+            
+            quizContainer.innerHTML = `
+                <div class="text-center mb-8">
+                    <div class="text-2xl font-bold text-primary-600 mb-2">Frage ${questionIndex + 1} von ${questions.length}</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary-600 h-2 rounded-full" style="width: ${((questionIndex + 1) / questions.length) * 100}%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-6">${question.question}</h4>
+                    
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => `
+                            <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="quiz" value="${index}" class="mr-3">
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <button id="submit-quiz" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+                        Antwort prüfen
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('submit-quiz').addEventListener('click', checkAnswer);
+        }
+
+        function checkAnswer() {
+            const selectedAnswer = document.querySelector('input[name="quiz"]:checked');
+            
+            if (!selectedAnswer) {
+                alert('Bitte wähle eine Antwort aus!');
+                return;
+            }
+            
+            const answer = parseInt(selectedAnswer.value);
+            const question = questions[currentQuestion];
+            
+            if (answer === question.correct) {
+                score++;
+                showMessage('Richtig! 🎉', 'success');
+            } else {
+                showMessage(`Falsch! Die richtige Antwort ist: ${question.options[question.correct]}`, 'error');
+            }
+            
+            currentQuestion++;
+            
+            setTimeout(() => {
+                if (currentQuestion < questions.length) {
+                    showQuestion(currentQuestion);
+                } else {
+                    showResults();
+                }
+            }, 2000);
+        }
+
+        function showResults() {
+            const quizContainer = document.getElementById('quiz-container');
+            const percentage = (score / questions.length) * 100;
+            
+            quizContainer.innerHTML = `
+                <div class="text-center">
+                    <h4 class="text-2xl font-bold text-gray-900 mb-4">Quiz abgeschlossen!</h4>
+                    <p class="text-lg text-gray-600 mb-6">Du hast ${score} von ${questions.length} Fragen richtig beantwortet.</p>
+                    <div class="text-4xl font-bold text-primary-600 mb-6">${percentage}%</div>
+                    <button onclick="location.reload()" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+                        Quiz wiederholen
+                    </button>
+                </div>
+            `;
+        }
+
+        function showMessage(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Initialize quiz
+        showQuestion(0);
+    </script>
+</body>
+</html> 

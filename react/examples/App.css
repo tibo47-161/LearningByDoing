@@ -1,0 +1,42 @@
+/* App Component Specific Styles */
+
+/* Additional styles for the App component can be added here */
+/* Most styles are already in index.css for global consistency */
+
+.app {
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Print styles */
+@media print {
+  .app-header,
+  .app-footer,
+  button {
+    display: none !important;
+  }
+  
+  section {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+} 

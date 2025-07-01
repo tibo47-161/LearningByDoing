@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Playground – Learning by Doing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', Arial, sans-serif; background: #f9fafb; color: #222; margin: 0; padding: 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .challenge-list { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .challenge-btn { background: #e0e7ff; color: #3730a3; border: none; border-radius: 6px; padding: 0.5rem 1.25rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .challenge-btn.active, .challenge-btn:hover { background: #6366f1; color: #fff; }
+    .challenge-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .challenge-desc { color: #555; margin-bottom: 1.5rem; }
+    .challenge-info { background:#e0f2fe; border-left:5px solid #38bdf8; padding:1rem 1.5rem; margin-bottom:1.5rem; border-radius:8px; }
+    .challenge-info .fas { margin-right: 0.5em; }
+    .playground { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .editor, .preview { flex: 1 1 400px; min-width: 350px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 1rem; margin-bottom: 2rem; }
+    .editor label { font-weight: 600; margin-bottom: 0.5rem; display: block; }
+    .editor textarea { width: 100%; min-height: 100px; font-family: 'Fira Mono', 'Consolas', monospace; font-size: 1rem; border: 1px solid #d1d5db; border-radius: 6px; padding: 0.75rem; margin-bottom: 1rem; background: #f3f4f6; resize: vertical; transition: border 0.2s; }
+    .editor textarea:focus { border-color: #6366f1; outline: none; }
+    .editor .run-btn { background: #6366f1; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-right: 1rem; }
+    .editor .run-btn:hover { background: #3730a3; }
+    .editor .reset-btn { background: #e5e7eb; color: #222; border: none; border-radius: 6px; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .editor .reset-btn:hover { background: #d1d5db; }
+    .editor .solution-btn { background: #e0e7ff; color: #3730a3; border: none; border-radius: 6px; padding: 0.5rem 1.5rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .editor .solution-btn:hover { background: #6366f1; color: #fff; }
+    .preview { background: #f3f4f6; border: 1px solid #e5e7eb; min-height: 220px; position: relative; }
+    .feedback { margin-top: 1rem; font-weight: 600; padding: 0.75rem 1rem; border-radius: 6px; display: inline-block; }
+    .feedback.success { background: #d1fae5; color: #047857; }
+    .feedback.error { background: #fee2e2; color: #b91c1c; }
+    @media (max-width: 900px) { .playground { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:1rem;">CSS Playground <span style="color:#6366f1;">Learning by Doing</span></h1>
+    <div class="challenge-list" id="challenge-list"></div>
+    <div id="challenge-area"></div>
+  </div>
+  <script>
+    const challenges = [
+      {
+        title: 'Selektoren: Klasse ansprechen',
+        description: 'Färbe alle Elemente der Klasse "wichtig" rot.',
+        info: {
+          explanation: 'Mit .klassenname sprichst du alle Elemente einer Klasse an.',
+          mnemonic: 'Punkt = Klasse, Raute = ID!',
+          reminder: 'CSS ist "Cascading" – spätere Regeln überschreiben frühere.'
+        },
+        starter: {
+          html: '<h2 class="wichtig">Achtung!</h2>\n<p>Das ist normal.</p>\n<h2 class="wichtig">Wichtig!</h2>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<h2 class="wichtig">Achtung!</h2>\n<p>Das ist normal.</p>\n<h2 class="wichtig">Wichtig!</h2>',
+          css: '.wichtig { color: red; }'
+        },
+        test: (html, css) => /\.wichtig\s*\{[^}]*color\s*:\s*red/i.test(css)
+          && /class="wichtig"/.test(html),
+        feedback: {
+          success: 'Richtig! Alle wichtigen Elemente sind rot! ✅',
+          error: 'Die Klasse "wichtig" wird noch nicht rot gefärbt. Tipp: .wichtig { color: red; }'
+        }
+      },
+      {
+        title: 'Box-Modell: Padding & Border',
+        description: 'Gib dem div mit der ID "box" 20px Padding und einen blauen Rahmen.',
+        info: {
+          explanation: 'Das Box-Modell beschreibt Abstand (margin), Innenabstand (padding), Rahmen (border) und Inhalt.',
+          mnemonic: 'Merke: Inhalt – Padding – Border – Margin (von innen nach außen)!',
+          reminder: 'ID-Selektor: #box { ... }'
+        },
+        starter: {
+          html: '<div id="box">Ich bin eine Box</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div id="box">Ich bin eine Box</div>',
+          css: '#box { padding: 20px; border: 2px solid blue; }'
+        },
+        test: (html, css) => /#box\s*\{[^}]*padding\s*:\s*20px/i.test(css) && /border[^;]*blue/i.test(css),
+        feedback: {
+          success: 'Super! Padding und Rahmen sind gesetzt! 📦',
+          error: 'Padding oder Rahmen fehlen noch. Tipp: #box { padding: 20px; border: 2px solid blue; }'
+        }
+      },
+      {
+        title: 'Flexbox: Drei Boxen nebeneinander',
+        description: 'Ordne drei divs mit Flexbox nebeneinander an.',
+        info: {
+          explanation: 'Mit display:flex werden Kindelemente nebeneinander angeordnet.',
+          mnemonic: 'Flex = flexibel! Flexbox macht Layouts einfach.',
+          reminder: 'display:flex immer auf das Elternelement setzen.'
+        },
+        starter: {
+          html: '<div id="container">\n  <div>Box 1</div>\n  <div>Box 2</div>\n  <div>Box 3</div>\n</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div id="container">\n  <div>Box 1</div>\n  <div>Box 2</div>\n  <div>Box 3</div>\n</div>',
+          css: '#container { display: flex; }'
+        },
+        test: (html, css) => /#container\s*\{[^}]*display\s*:\s*flex/i.test(css),
+        feedback: {
+          success: 'Perfekt! Die Boxen stehen nebeneinander! 📦📦📦',
+          error: 'Flexbox fehlt noch. Tipp: #container { display: flex; }'
+        }
+      },
+      {
+        title: 'Responsive Design: Media Query',
+        description: 'Mache die Schriftgröße ab 600px Breite größer (24px).',
+        info: {
+          explanation: 'Mit @media kannst du CSS-Regeln für bestimmte Bildschirmgrößen schreiben.',
+          mnemonic: 'Media Query = Medienabfrage! So wird deine Seite responsive.',
+          reminder: 'Syntax: @media (min-width: 600px) { ... }'
+        },
+        starter: {
+          html: '<p id="text">Ich werde größer!</p>',
+          css: '/* Schreibe hier deinen CSS-Code */\n#text { font-size: 16px; }'
+        },
+        solution: {
+          html: '<p id="text">Ich werde größer!</p>',
+          css: '#text { font-size: 16px; }\n@media (min-width: 600px) { #text { font-size: 24px; } }'
+        },
+        test: (html, css) => /@media\s*\(min-width:\s*600px\)/i.test(css) && /font-size\s*:\s*24px/i.test(css),
+        feedback: {
+          success: 'Responsive! Die Schrift wird ab 600px größer! 📱➡️💻',
+          error: 'Media Query fehlt oder ist falsch. Tipp: @media (min-width: 600px) { #text { font-size: 24px; } }'
+        }
+      },
+      {
+        title: 'Pseudoklasse: Hover-Effekt',
+        description: 'Färbe einen Button beim Überfahren mit der Maus grün.',
+        info: {
+          explanation: 'Mit :hover kannst du Elemente beim Überfahren mit der Maus stylen.',
+          mnemonic: 'Eselsbrücke: hover = schweben (mit der Maus drüber)!',
+          reminder: 'Syntax: button:hover { ... }'
+        },
+        starter: {
+          html: '<button>Fahr mit der Maus drüber!</button>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<button>Fahr mit der Maus drüber!</button>',
+          css: 'button:hover { background: green; color: white; }'
+        },
+        test: (html, css) => /button\s*:\s*hover/i.test(css) && /background\s*:\s*green/i.test(css),
+        feedback: {
+          success: 'Super! Der Hover-Effekt funktioniert! 🖱️',
+          error: 'Der Hover-Effekt fehlt noch. Tipp: button:hover { background: green; color: white; }'
+        }
+      },
+      {
+        title: 'ID-Selektor: Einzelnes Element stylen',
+        description: 'Färbe das Element mit der ID "highlight" gelb.',
+        info: {
+          explanation: 'Mit #idname sprichst du genau ein Element mit dieser ID an.',
+          mnemonic: 'Raute = ID, Punkt = Klasse!',
+          reminder: 'IDs dürfen nur einmal pro Seite vergeben werden.'
+        },
+        starter: {
+          html: '<p id="highlight">Ich soll gelb werden!</p>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<p id="highlight">Ich soll gelb werden!</p>',
+          css: '#highlight { background: yellow; }'
+        },
+        test: (html, css) => /#highlight\s*\{[^}]*background\s*:\s*yellow/i.test(css),
+        feedback: {
+          success: 'Richtig! Das Element ist gelb! 🌟',
+          error: 'Der ID-Selektor oder die Hintergrundfarbe fehlt. Tipp: #highlight { background: yellow; }'
+        }
+      },
+      {
+        title: 'Schriftarten & Größen',
+        description: 'Setze die Schriftart auf Arial und die Größe auf 20px für alle <p>-Elemente.',
+        info: {
+          explanation: 'Mit font-family und font-size bestimmst du Schriftart und -größe.',
+          mnemonic: 'font-family = Familie der Schrift, font-size = Größe!',
+          reminder: 'Mehrere Schriftarten mit Komma trennen, z.B. Arial, sans-serif.'
+        },
+        starter: {
+          html: '<p>Das ist ein Absatz.</p>\n<p>Noch ein Absatz.</p>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<p>Das ist ein Absatz.</p>\n<p>Noch ein Absatz.</p>',
+          css: 'p { font-family: Arial, sans-serif; font-size: 20px; }'
+        },
+        test: (html, css) => /font-family\s*:\s*Arial/i.test(css) && /font-size\s*:\s*20px/i.test(css),
+        feedback: {
+          success: 'Super! Die Schrift ist wie gewünscht! 🅰️',
+          error: 'Schriftart oder -größe fehlt. Tipp: p { font-family: Arial, sans-serif; font-size: 20px; }'
+        }
+      },
+      {
+        title: 'Hintergrundbild setzen',
+        description: 'Füge dem div mit der Klasse "bg" ein Hintergrundbild hinzu.',
+        info: {
+          explanation: 'Mit background-image kannst du ein Bild als Hintergrund setzen.',
+          mnemonic: 'background-image: url(...) – immer mit url()!',
+          reminder: 'Pfad und Anführungszeichen nicht vergessen!'
+        },
+        starter: {
+          html: '<div class="bg">Hier ist ein Hintergrundbild</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div class="bg">Hier ist ein Hintergrundbild</div>',
+          css: '.bg { background-image: url("https://picsum.photos/200/100"); }'
+        },
+        test: (html, css) => /background-image\s*:\s*url\(["']?https:\/\/picsum\.photos\/200\/100["']?\)/i.test(css),
+        feedback: {
+          success: 'Perfekt! Das Hintergrundbild ist da! 🖼️',
+          error: 'Das Hintergrundbild fehlt. Tipp: .bg { background-image: url("https://picsum.photos/200/100"); }'
+        }
+      },
+      {
+        title: 'Margin vs. Padding',
+        description: 'Gib dem div mit der Klasse "box" 30px Außenabstand (margin) und 10px Innenabstand (padding).',
+        info: {
+          explanation: 'margin ist der Außenabstand, padding der Innenabstand eines Elements.',
+          mnemonic: 'Merke: margin = außen, padding = innen!',
+          reminder: 'Beides kann in px, %, em usw. angegeben werden.'
+        },
+        starter: {
+          html: '<div class="box">Abstand bitte!</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div class="box">Abstand bitte!</div>',
+          css: '.box { margin: 30px; padding: 10px; }'
+        },
+        test: (html, css) => /margin\s*:\s*30px/i.test(css) && /padding\s*:\s*10px/i.test(css),
+        feedback: {
+          success: 'Sehr gut! Margin und Padding sind gesetzt! ↔️⬛',
+          error: 'Margin oder Padding fehlt. Tipp: .box { margin: 30px; padding: 10px; }'
+        }
+      },
+      {
+        title: 'CSS Grid: 2x2 Layout',
+        description: 'Erstelle ein 2x2-Grid mit vier Boxen.',
+        info: {
+          explanation: 'Mit display:grid und grid-template-columns/rows kannst du Rasterlayouts bauen.',
+          mnemonic: 'Grid = Gitter! grid-template-columns: 2 Spalten, grid-template-rows: 2 Zeilen.',
+          reminder: 'display:grid immer auf das Elternelement setzen.'
+        },
+        starter: {
+          html: '<div class="grid">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n  <div>4</div>\n</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div class="grid">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n  <div>4</div>\n</div>',
+          css: '.grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; }'
+        },
+        test: (html, css) => /display\s*:\s*grid/i.test(css) && /grid-template-columns\s*:\s*1fr 1fr/i.test(css),
+        feedback: {
+          success: 'Super! Das Grid ist da! #️⃣',
+          error: 'Grid fehlt oder ist nicht 2x2. Tipp: .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }'
+        }
+      },
+      {
+        title: 'Positionierung: Absolut',
+        description: 'Positioniere das div mit der Klasse "abs" absolut 50px von oben und 30px von links.',
+        info: {
+          explanation: 'Mit position:absolute kannst du Elemente frei platzieren.',
+          mnemonic: 'absolute = absolut frei! top/left geben die Position an.',
+          reminder: 'Das Elternelement sollte position:relative haben, wenn nötig.'
+        },
+        starter: {
+          html: '<div class="abs">Ich bin absolut!</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div class="abs">Ich bin absolut!</div>',
+          css: '.abs { position: absolute; top: 50px; left: 30px; }'
+        },
+        test: (html, css) => /position\s*:\s*absolute/i.test(css) && /top\s*:\s*50px/i.test(css) && /left\s*:\s*30px/i.test(css),
+        feedback: {
+          success: 'Perfekt! Das Element ist absolut positioniert! 📐',
+          error: 'Positionierung fehlt oder ist falsch. Tipp: .abs { position: absolute; top: 50px; left: 30px; }'
+        }
+      },
+      {
+        title: 'Pseudoelement ::after',
+        description: 'Füge nach jedem <li> ein Sternchen (★) mit ::after hinzu.',
+        info: {
+          explanation: 'Mit ::after kannst du Inhalte nach einem Element einfügen.',
+          mnemonic: 'after = danach! content:"..." bestimmt, was eingefügt wird.',
+          reminder: 'Syntax: li::after { content: "★"; }'
+        },
+        starter: {
+          html: '<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JS</li>\n</ul>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JS</li>\n</ul>',
+          css: 'li::after { content: "★"; color: gold; margin-left: 4px; }'
+        },
+        test: (html, css) => /li::after\s*\{[^}]*content\s*:\s*"★"/i.test(css),
+        feedback: {
+          success: 'Super! Die Sternchen sind da! ⭐',
+          error: 'Das Pseudoelement fehlt. Tipp: li::after { content: "★"; }'
+        }
+      },
+      {
+        title: 'Mini-Projekt: Visitenkarte',
+        description: 'Baue eine einfache Visitenkarte mit Name, Beruf und Kontakt in einem schön gestalteten Kasten.',
+        info: {
+          explanation: 'Kombiniere HTML-Struktur und CSS-Styles für ein kleines Layout.',
+          mnemonic: 'Projekt = alles Gelernte anwenden!',
+          reminder: 'Nutze margin, padding, border, background, font-size, ... für ein schönes Ergebnis.'
+        },
+        starter: {
+          html: '<div class="card">\n  <h2>Max Mustermann</h2>\n  <p>Webentwickler</p>\n  <p>Email: max@example.com</p>\n</div>',
+          css: '/* Schreibe hier deinen CSS-Code */\n'
+        },
+        solution: {
+          html: '<div class="card">\n  <h2>Max Mustermann</h2>\n  <p>Webentwickler</p>\n  <p>Email: max@example.com</p>\n</div>',
+          css: '.card { background: #e0e7ff; border-radius: 12px; padding: 20px; max-width: 300px; margin: 30px auto; box-shadow: 0 2px 8px #6366f133; } .card h2 { margin: 0 0 8px 0; } .card p { margin: 4px 0; }'
+        },
+        test: (html, css) => /background/i.test(css) && /border-radius/i.test(css) && /padding/i.test(css) && /box-shadow/i.test(css),
+        feedback: {
+          success: 'Sehr schön! Deine Visitenkarte sieht super aus! 👤',
+          error: 'Gestaltung fehlt noch. Tipp: .card { background: ...; border-radius: ...; padding: ...; }'
+        }
+      }
+    ];
+
+    let current = 0;
+    const challengeList = document.getElementById('challenge-list');
+    const challengeArea = document.getElementById('challenge-area');
+
+    function renderChallengeList() {
+      challengeList.innerHTML = '';
+      challenges.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'challenge-btn' + (idx === current ? ' active' : '');
+        btn.textContent = `${idx+1}. ${ch.title}`;
+        btn.onclick = () => { current = idx; renderChallenge(); renderChallengeList(); };
+        challengeList.appendChild(btn);
+      });
+    }
+
+    function renderChallenge() {
+      const ch = challenges[current];
+      challengeArea.innerHTML = `
+        <div class="challenge-title">${ch.title}</div>
+        <div class="challenge-desc">${ch.description}</div>
+        <div class="challenge-info">
+          <div style="font-weight:600;margin-bottom:0.25rem;"><i class="fas fa-info-circle" style="color:#0ea5e9;"></i> Info:</div>
+          <div style="margin-bottom:0.25rem;">${ch.info.explanation}</div>
+          <div style="font-size:0.97em;color:#0369a1;margin-bottom:0.25rem;"><i class="fas fa-lightbulb"></i> Eselsbrücke: <span style="font-style:italic;">${ch.info.mnemonic}</span></div>
+          <div style="font-size:0.97em;color:#0d9488;"><i class="fas fa-bell"></i> Reminder: <span style="font-style:italic;">${ch.info.reminder}</span></div>
+        </div>
+        <div class="playground">
+          <div class="editor">
+            <label for="html">HTML:</label>
+            <textarea id="html"><!-- Hier deinen HTML-Code schreiben -->\n${ch.starter.html}</textarea>
+            <label for="css">CSS:</label>
+            <textarea id="css"><!-- Hier deinen CSS-Code schreiben -->\n${ch.starter.css}</textarea>
+            <button class="run-btn"><i class="fas fa-play"></i> Vorschau</button>
+            <button class="reset-btn"><i class="fas fa-undo"></i> Zurücksetzen</button>
+            <button class="solution-btn"><i class="fas fa-lightbulb"></i> Lösung anzeigen</button>
+            <div id="feedback"></div>
+          </div>
+          <div class="preview">
+            <iframe id="preview-frame" sandbox="allow-scripts allow-forms" style="width:100%;height:220px;border:none;background:#fff;"></iframe>
+          </div>
+        </div>
+      `;
+      const htmlarea = document.getElementById('html');
+      const cssarea = document.getElementById('css');
+      const runBtn = challengeArea.querySelector('.run-btn');
+      const resetBtn = challengeArea.querySelector('.reset-btn');
+      const solutionBtn = challengeArea.querySelector('.solution-btn');
+      const feedback = document.getElementById('feedback');
+      const previewFrame = document.getElementById('preview-frame');
+
+      function updatePreview() {
+        const html = htmlarea.value;
+        const css = cssarea.value;
+        previewFrame.srcdoc = `<style>${css}</style>${html}`;
+      }
+      function checkSolution() {
+        const html = htmlarea.value;
+        const css = cssarea.value;
+        let ok = false;
+        try {
+          ok = ch.test(html, css);
+        } catch(e) { ok = false; }
+        feedback.innerHTML = `<span class="feedback ${ok ? 'success' : 'error'}">${ok ? ch.feedback.success : ch.feedback.error}</span>`;
+        if(ok) {
+          feedback.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      }
+      runBtn.onclick = () => { updatePreview(); checkSolution(); };
+      resetBtn.onclick = () => { htmlarea.value = '<!-- Hier deinen HTML-Code schreiben -->\n' + ch.starter.html; cssarea.value = '<!-- Hier deinen CSS-Code schreiben -->\n' + ch.starter.css; updatePreview(); feedback.innerHTML = ''; };
+      solutionBtn.onclick = () => { htmlarea.value = ch.solution.html; cssarea.value = ch.solution.css; updatePreview(); feedback.innerHTML = ''; };
+      htmlarea.oninput = cssarea.oninput = () => { updatePreview(); feedback.innerHTML = ''; };
+      updatePreview();
+    }
+
+    renderChallengeList();
+    renderChallenge();
+  </script>
+</body>
+</html> 

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML5 Semantik - Modernes Web Development Learning">
+    <meta name="keywords" content="HTML5, Semantik, Web Development, Learning">
+    <meta name="author" content="Learning System">
+    
+    <title>HTML5 Semantik - Modern Web Development</title>
+    
+    <!-- Modern CSS Reset -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="site-header" role="banner">
+        <div class="container">
+            <nav class="main-nav" role="navigation" aria-label="Main navigation">
+                <div class="nav-brand">
+                    <h1 class="brand-title">
+                        <i class="fas fa-code"></i>
+                        HTML5 Learning
+                    </h1>
+                </div>
+                
+                <ul class="nav-menu" role="menubar">
+                    <li role="none">
+                        <a href="#semantic-elements" role="menuitem" class="nav-link">
+                            <i class="fas fa-tags"></i>
+                            Semantik
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#accessibility" role="menuitem" class="nav-link">
+                            <i class="fas fa-universal-access"></i>
+                            Accessibility
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#forms" role="menuitem" class="nav-link">
+                            <i class="fas fa-wpforms"></i>
+                            Formulare
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="#media" role="menuitem" class="nav-link">
+                            <i class="fas fa-photo-video"></i>
+                            Media
+                        </a>
+                    </li>
+                </ul>
+                
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span class="hamburger"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 id="hero-title" class="hero-title">
+                        HTML5 Semantik
+                        <span class="highlight">Modern Web Development</span>
+                    </h1>
+                    <p class="hero-description">
+                        Lerne die Grundlagen der HTML5-Semantik und erstelle zugängliche, 
+                        strukturierte Webseiten mit modernen Standards.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="startLearning()">
+                            <i class="fas fa-play"></i>
+                            Lernen starten
+                        </button>
+                        <button class="btn btn-secondary" onclick="showExamples()">
+                            <i class="fas fa-eye"></i>
+                            Beispiele ansehen
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="code-preview">
+                        <div class="code-header">
+                            <span class="code-title">HTML5 Struktur</span>
+                            <div class="code-controls">
+                                <span class="code-dot red"></span>
+                                <span class="code-dot yellow"></span>
+                                <span class="code-dot green"></span>
+                            </div>
+                        </div>
+                        <pre class="code-content"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Semantische HTML5&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;Navigation&lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;article&gt;
+            &lt;section&gt;Inhalt&lt;/section&gt;
+        &lt;/article&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;Footer&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semantic Elements Section -->
+        <section id="semantic-elements" class="content-section" aria-labelledby="semantic-title">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="semantic-title" class="section-title">
+                        <i class="fas fa-tags"></i>
+                        Semantische HTML5 Elemente
+                    </h2>
+                    <p class="section-description">
+                        Verstehe die Bedeutung und Verwendung der wichtigsten semantischen HTML5-Elemente.
+                    </p>
+                </header>
+
+                <div class="elements-grid">
+                    <!-- Header Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;header&gt;</code>
+                            </h3>
+                            <span class="element-badge">Container</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert den Kopfbereich einer Seite oder eines Abschnitts.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;header&gt;
+    &lt;h1&gt;Website Titel&lt;/h1&gt;
+    &lt;nav&gt;Navigation&lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('header')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Nav Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;nav&gt;</code>
+                            </h3>
+                            <span class="element-badge">Navigation</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert einen Navigationsbereich mit Links.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#"&gt;About&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('nav')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Main Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;main&gt;</code>
+                            </h3>
+                            <span class="element-badge">Hauptinhalt</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert den Hauptinhalt der Seite (nur einmal pro Seite).</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;main&gt;
+    &lt;h1&gt;Haupttitel&lt;/h1&gt;
+    &lt;article&gt;Artikel Inhalt&lt;/article&gt;
+&lt;/main&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('main')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Article Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;article&gt;</code>
+                            </h3>
+                            <span class="element-badge">Inhalt</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert einen eigenständigen, wiederverwendbaren Inhalt.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;article&gt;
+    &lt;header&gt;
+        &lt;h2&gt;Artikel Titel&lt;/h2&gt;
+    &lt;/header&gt;
+    &lt;p&gt;Artikel Inhalt...&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('article')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Section Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;section&gt;</code>
+                            </h3>
+                            <span class="element-badge">Abschnitt</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert einen thematischen Abschnitt innerhalb eines Dokuments.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;section&gt;
+    &lt;h2&gt;Abschnitt Titel&lt;/h2&gt;
+    &lt;p&gt;Abschnitt Inhalt...&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('section')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Aside Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;aside&gt;</code>
+                            </h3>
+                            <span class="element-badge">Nebeninhalt</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert Inhalte, die vom Hauptinhalt getrennt sind.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;aside&gt;
+    &lt;h3&gt;Sidebar&lt;/h3&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Zusätzliche Links&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/aside&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('aside')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+
+                    <!-- Footer Element -->
+                    <article class="element-card" tabindex="0">
+                        <header class="element-header">
+                            <h3 class="element-title">
+                                <code>&lt;footer&gt;</code>
+                            </h3>
+                            <span class="element-badge">Fußbereich</span>
+                        </header>
+                        <div class="element-content">
+                            <p>Definiert den Fußbereich einer Seite oder eines Abschnitts.</p>
+                            <div class="element-example">
+                                <h4>Verwendung:</h4>
+                                <pre><code>&lt;footer&gt;
+    &lt;p&gt;&copy; 2024 Website&lt;/p&gt;
+    &lt;nav&gt;Footer Navigation&lt;/nav&gt;
+&lt;/footer&gt;</code></pre>
+                            </div>
+                        </div>
+                        <footer class="element-footer">
+                            <button class="btn btn-sm" onclick="showElementDetails('footer')">
+                                Mehr Details
+                            </button>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accessibility Section -->
+        <section id="accessibility" class="content-section" aria-labelledby="accessibility-title">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="accessibility-title" class="section-title">
+                        <i class="fas fa-universal-access"></i>
+                        Accessibility (Barrierefreiheit)
+                    </h2>
+                    <p class="section-description">
+                        Lerne, wie du zugängliche Webseiten mit HTML5 erstellst.
+                    </p>
+                </header>
+
+                <div class="accessibility-grid">
+                    <div class="accessibility-card">
+                        <h3>ARIA Labels</h3>
+                        <p>Verwende ARIA-Attribute für bessere Screen Reader Unterstützung.</p>
+                        <pre><code>&lt;button aria-label="Close menu"&gt;
+    &lt;i class="fas fa-times"&gt;&lt;/i&gt;
+&lt;/button&gt;</code></pre>
+                    </div>
+
+                    <div class="accessibility-card">
+                        <h3>Semantische Struktur</h3>
+                        <p>Verwende die richtigen HTML5-Elemente für bessere Navigation.</p>
+                        <pre><code>&lt;main role="main"&gt;
+    &lt;h1&gt;Haupttitel&lt;/h1&gt;
+    &lt;section aria-labelledby="section-title"&gt;
+        &lt;h2 id="section-title"&gt;Abschnitt&lt;/h2&gt;
+    &lt;/section&gt;
+&lt;/main&gt;</code></pre>
+                    </div>
+
+                    <div class="accessibility-card">
+                        <h3>Skip Links</h3>
+                        <p>Hilfe für Tastaturnutzer, direkt zum Hauptinhalt zu springen.</p>
+                        <pre><code>&lt;a href="#main-content" class="skip-link"&gt;
+    Skip to main content
+&lt;/a&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forms Section -->
+        <section id="forms" class="content-section" aria-labelledby="forms-title">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="forms-title" class="section-title">
+                        <i class="fas fa-wpforms"></i>
+                        Moderne HTML5 Formulare
+                    </h2>
+                    <p class="section-description">
+                        Erstelle benutzerfreundliche Formulare mit HTML5-Validierung.
+                    </p>
+                </header>
+
+                <div class="form-demo">
+                    <form class="modern-form" novalidate>
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                required 
+                                placeholder="Dein vollständiger Name"
+                                pattern="[A-Za-z\s]{2,50}"
+                                title="Mindestens 2 Buchstaben, nur Buchstaben und Leerzeichen erlaubt"
+                            >
+                            <span class="form-hint">Mindestens 2 Buchstaben</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-Mail *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                placeholder="deine.email@example.com"
+                            >
+                            <span class="form-hint">Gültige E-Mail-Adresse eingeben</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                placeholder="+49 123 456789"
+                                pattern="[\+]?[0-9\s\-\(\)]{10,}"
+                            >
+                            <span class="form-hint">Optionale Telefonnummer</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthdate">Geburtsdatum</label>
+                            <input 
+                                type="date" 
+                                id="birthdate" 
+                                name="birthdate"
+                                max="2024-12-31"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">Erfahrungslevel</label>
+                            <select id="experience" name="experience">
+                                <option value="">Bitte wählen...</option>
+                                <option value="beginner">Anfänger</option>
+                                <option value="intermediate">Fortgeschritten</option>
+                                <option value="advanced">Experte</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <fieldset>
+                                <legend>Interessengebiete</legend>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="interests" value="frontend">
+                                        <span class="checkmark"></span>
+                                        Frontend Development
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="interests" value="backend">
+                                        <span class="checkmark"></span>
+                                        Backend Development
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="interests" value="mobile">
+                                        <span class="checkmark"></span>
+                                        Mobile Development
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Nachricht</label>
+                            <textarea 
+                                id="message" 
+                                name="message" 
+                                rows="4" 
+                                placeholder="Deine Nachricht..."
+                                maxlength="500"
+                            ></textarea>
+                            <span class="form-hint">Maximal 500 Zeichen</span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Absenden
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-undo"></i>
+                                Zurücksetzen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Media Section -->
+        <section id="media" class="content-section" aria-labelledby="media-title">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="media-title" class="section-title">
+                        <i class="fas fa-photo-video"></i>
+                        HTML5 Media Elemente
+                    </h2>
+                    <p class="section-description">
+                        Integriere Bilder, Videos und Audio mit modernen HTML5-Elementen.
+                    </p>
+                </header>
+
+                <div class="media-grid">
+                    <!-- Images -->
+                    <article class="media-card">
+                        <h3>Responsive Images</h3>
+                        <div class="image-demo">
+                            <picture>
+                                <source media="(min-width: 768px)" srcset="https://picsum.photos/800/400">
+                                <source media="(min-width: 480px)" srcset="https://picsum.photos/600/300">
+                                <img 
+                                    src="https://picsum.photos/400/200" 
+                                    alt="Responsive Beispielbild"
+                                    loading="lazy"
+                                    width="400"
+                                    height="200"
+                                >
+                            </picture>
+                        </div>
+                        <pre><code>&lt;picture&gt;
+    &lt;source media="(min-width: 768px)" 
+            srcset="large.jpg"&gt;
+    &lt;source media="(min-width: 480px)" 
+            srcset="medium.jpg"&gt;
+    &lt;img src="small.jpg" alt="Beschreibung"&gt;
+&lt;/picture&gt;</code></pre>
+                    </article>
+
+                    <!-- Video -->
+                    <article class="media-card">
+                        <h3>HTML5 Video</h3>
+                        <div class="video-demo">
+                            <video 
+                                controls 
+                                preload="metadata"
+                                poster="https://picsum.photos/400/225"
+                                width="400"
+                                height="225"
+                            >
+                                <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+                                <source src="https://sample-videos.com/zip/10/webm/SampleVideo_1280x720_1mb.webm" type="video/webm">
+                                <track kind="subtitles" src="subtitles.vtt" srclang="de" label="Deutsch">
+                                <p>Dein Browser unterstützt keine HTML5-Videos. 
+                                   <a href="video.mp4">Video herunterladen</a>.</p>
+                            </video>
+                        </div>
+                        <pre><code>&lt;video controls preload="metadata"&gt;
+    &lt;source src="video.mp4" type="video/mp4"&gt;
+    &lt;source src="video.webm" type="video/webm"&gt;
+    &lt;track kind="subtitles" src="subtitles.vtt"&gt;
+    Fallback Text
+&lt;/video&gt;</code></pre>
+                    </article>
+
+                    <!-- Audio -->
+                    <article class="media-card">
+                        <h3>HTML5 Audio</h3>
+                        <div class="audio-demo">
+                            <audio controls preload="metadata">
+                                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+                                <p>Dein Browser unterstützt keine HTML5-Audio.</p>
+                            </audio>
+                        </div>
+                        <pre><code>&lt;audio controls preload="metadata"&gt;
+    &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+    &lt;source src="audio.ogg" type="audio/ogg"&gt;
+    Fallback Text
+&lt;/audio&gt;</code></pre>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz -->
+        <section class="content-section quiz-section" aria-labelledby="quiz-title">
+            <div class="container">
+                <header class="section-header">
+                    <h2 id="quiz-title" class="section-title">
+                        <i class="fas fa-question-circle"></i>
+                        HTML5 Quiz
+                    </h2>
+                    <p class="section-description">
+                        Teste dein Wissen über HTML5-Semantik!
+                    </p>
+                </header>
+
+                <div class="quiz-container">
+                    <div class="quiz-progress">
+                        <span class="progress-text">Frage <span id="current-question">1</span> von <span id="total-questions">5</span></span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question" id="quiz-question">
+                        <h3 id="question-text">Welches HTML5-Element wird für den Hauptinhalt einer Webseite verwendet?</h3>
+                        
+                        <div class="quiz-options" id="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="answer" value="0">
+                                <span class="option-text">&lt;header&gt;</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="answer" value="1">
+                                <span class="option-text">&lt;main&gt;</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="answer" value="2">
+                                <span class="option-text">&lt;section&gt;</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="answer" value="3">
+                                <span class="option-text">&lt;article&gt;</span>
+                            </label>
+                        </div>
+
+                        <div class="quiz-actions">
+                            <button class="btn btn-primary" id="submit-answer" onclick="submitAnswer()">
+                                Antwort prüfen
+                            </button>
+                            <button class="btn btn-secondary" id="next-question" onclick="nextQuestion()" style="display: none;">
+                                Nächste Frage
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-result" id="quiz-result" style="display: none;">
+                        <h3>Quiz abgeschlossen!</h3>
+                        <p>Du hast <span id="score">0</span> von <span id="max-score">5</span> Fragen richtig beantwortet.</p>
+                        <button class="btn btn-primary" onclick="restartQuiz()">
+                            Quiz wiederholen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HTML5 Learning System</h3>
+                    <p>Moderne Web Development Grundlagen für deine Prüfungsvorbereitung.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#semantic-elements">Semantik</a></li>
+                        <li><a href="#accessibility">Accessibility</a></li>
+                        <li><a href="#forms">Formulare</a></li>
+                        <li><a href="#media">Media</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Ressourcen</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener">MDN HTML</a></li>
+                        <li><a href="https://www.w3.org/WAI/" target="_blank" rel="noopener">WAI Guidelines</a></li>
+                        <li><a href="https://html5doctor.com/" target="_blank" rel="noopener">HTML5 Doctor</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 HTML5 Learning System. Erstellt für Lernzwecke.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> 

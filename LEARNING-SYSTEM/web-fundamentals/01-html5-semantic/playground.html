@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Playground – Learning by Doing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #f9fafb;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .challenge-list {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .challenge-btn {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .challenge-btn.active, .challenge-btn:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+    .challenge-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .challenge-desc {
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+    .playground {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .editor, .preview {
+      flex: 1 1 400px;
+      min-width: 350px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .editor label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .editor textarea {
+      width: 100%;
+      min-height: 180px;
+      font-family: 'Fira Mono', 'Consolas', monospace;
+      font-size: 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      background: #f3f4f6;
+      resize: vertical;
+      transition: border 0.2s;
+    }
+    .editor textarea:focus {
+      border-color: #6366f1;
+      outline: none;
+    }
+    .editor .run-btn {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 1rem;
+    }
+    .editor .run-btn:hover {
+      background: #3730a3;
+    }
+    .editor .reset-btn {
+      background: #e5e7eb;
+      color: #222;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .editor .reset-btn:hover {
+      background: #d1d5db;
+    }
+    .editor .solution-btn {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .editor .solution-btn:hover {
+      background: #6366f1;
+      color: #fff;
+    }
+    .preview {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      min-height: 220px;
+      position: relative;
+    }
+    .feedback {
+      margin-top: 1rem;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .feedback.success {
+      background: #d1fae5;
+      color: #047857;
+    }
+    .feedback.error {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    @media (max-width: 900px) {
+      .playground { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:1rem;">Web Playground <span style="color:#6366f1;">Learning by Doing</span></h1>
+    <div class="challenge-list" id="challenge-list"></div>
+    <div id="challenge-area">
+      <!-- Challenge content will be injected here -->
+    </div>
+  </div>
+  <script>
+    // --- Challenge Definitions ---
+    const challenges = [
+      {
+        title: 'Formular erstellen',
+        description: 'Erstelle ein HTML-Formular mit einem Textfeld für den Namen und einem Absende-Button.',
+        info: {
+          explanation: 'Ein <form>-Element bündelt Eingabefelder und Buttons, damit Daten abgeschickt werden können.',
+          mnemonic: 'Merke: <form> ist wie ein Umschlag – alles, was abgeschickt werden soll, kommt hinein!',
+          reminder: 'Vergiss nicht: Jedes Formular braucht mindestens ein Eingabefeld und einen Button.'
+        },
+        starter: `<form>\n  <input type="text" placeholder="Name">\n  <button>Absenden</button>\n</form>`,
+        solution: /<form[\s\S]*<input[^>]*type=["']text["'][^>]*>[\s\S]*<button[\s\S]*>.*<\/button>[\s\S]*<\/form>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const form = div.querySelector('form');
+          const input = div.querySelector('input[type="text"]');
+          const button = div.querySelector('button');
+          return form && input && button;
+        },
+        feedback: {
+          success: 'Super, du hast alles richtig! ✅',
+          error: 'Das Formular, das Textfeld oder der Button fehlt. Tipp: <input type="text"> und <button>...</button>'
+        }
+      },
+      {
+        title: 'Bild einfügen',
+        description: 'Füge ein Bild mit dem src "https://picsum.photos/200" und alternativem Text "Beispielbild" ein.',
+        info: {
+          explanation: 'Das <img>-Tag bindet Bilder ein. Das alt-Attribut ist wichtig für Barrierefreiheit und SEO.',
+          mnemonic: 'Eselsbrücke: "alt" steht für "Alternativtext" – immer beschreiben, was auf dem Bild zu sehen ist!',
+          reminder: 'Pflicht: src und alt immer angeben!'
+        },
+        starter: `<img src="https://picsum.photos/200" alt="Beispielbild">`,
+        solution: /<img[^>]*src=["']https:\/\/picsum\.photos\/200["'][^>]*alt=["']Beispielbild["'][^>]*>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const img = div.querySelector('img[src="https://picsum.photos/200"][alt="Beispielbild"]');
+          return !!img;
+        },
+        feedback: {
+          success: 'Perfekt, das Bild ist korrekt eingefügt! 🖼️',
+          error: 'Das Bild fehlt oder src/alt stimmt nicht. Tipp: <img src="https://picsum.photos/200" alt="Beispielbild">'
+        }
+      },
+      {
+        title: 'Liste erstellen',
+        description: 'Erstelle eine ungeordnete Liste mit drei Einträgen: HTML, CSS, JavaScript.',
+        info: {
+          explanation: 'Mit <ul> erstellst du eine ungeordnete Liste, <li> steht für Listeneintrag.',
+          mnemonic: 'Merke: "ul" = unordered list, "li" = list item.',
+          reminder: 'Jeder Eintrag kommt in ein eigenes <li>.'
+        },
+        starter: `<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JavaScript</li>\n</ul>`,
+        solution: /<ul[\s\S]*<li>HTML<\/li>[\s\S]*<li>CSS<\/li>[\s\S]*<li>JavaScript<\/li>[\s\S]*<\/ul>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const ul = div.querySelector('ul');
+          const items = ul ? Array.from(ul.querySelectorAll('li')).map(li => li.textContent.trim()) : [];
+          return ul && items.length === 3 && items[0]==='HTML' && items[1]==='CSS' && items[2]==='JavaScript';
+        },
+        feedback: {
+          success: 'Sehr gut, die Liste ist korrekt! 📋',
+          error: 'Die Liste oder die Einträge fehlen oder sind falsch. Tipp: <ul><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>'
+        }
+      },
+      {
+        title: 'Button mit Event',
+        description: 'Erstelle einen Button, der beim Klicken eine JavaScript-Alertbox mit dem Text "Hallo Welt!" anzeigt.',
+        info: {
+          explanation: 'Mit dem onclick-Attribut kannst du JavaScript direkt an Buttons binden.',
+          mnemonic: 'Eselsbrücke: "on-click" = "beim Klicken" – so reagiert dein Button!',
+          reminder: 'Achte auf die richtige Syntax: onclick="alert(...)"'
+        },
+        starter: `<button onclick="alert('Hallo Welt!')">Klick mich</button>`,
+        solution: /<button[^>]*onclick=["']alert\('Hallo Welt!'\)["'][^>]*>[^<]*<\/button>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const btn = div.querySelector('button[onclick]');
+          return btn && btn.getAttribute('onclick').includes("alert('Hallo Welt!')");
+        },
+        feedback: {
+          success: 'Super, der Button funktioniert! 🖱️',
+          error: 'Der Button oder das onclick-Event fehlt. Tipp: <button onclick="alert(\'Hallo Welt!\')">...</button>'
+        }
+      },
+      {
+        title: 'Semantische Struktur',
+        description: 'Erstelle eine Seite mit <header>, <main> und <footer> Elementen.',
+        info: {
+          explanation: '<header> ist der Kopf, <main> der Hauptteil, <footer> der Fußbereich deiner Seite.',
+          mnemonic: 'Merke: Header = Hut, Footer = Fuß, Main = Mitte!',
+          reminder: 'Jedes dieser Elemente sollte nur einmal pro Seite vorkommen.'
+        },
+        starter: `<!-- Erstelle hier die Grundstruktur mit header, main und footer -->`,
+        solution: /<header[\s\S]*<main[\s\S]*<footer[\s\S]*<\/footer>[\s\S]*<\/main>[\s\S]*<\/header>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          return div.querySelector('header') && div.querySelector('main') && div.querySelector('footer');
+        },
+        feedback: {
+          success: 'Super, die semantische Grundstruktur ist da! 🏗️',
+          error: 'Mindestens eines der Elemente <header>, <main> oder <footer> fehlt.'
+        }
+      },
+      {
+        title: 'Tabelle erstellen',
+        description: 'Baue eine Tabelle mit einer Kopfzeile (Name, Alter) und zwei Zeilen.',
+        info: {
+          explanation: 'Mit <table>, <thead>, <tbody>, <tr>, <th>, <td> baust du Tabellen.',
+          mnemonic: 'Eselsbrücke: "tr" = table row (Zeile), "td" = table data (Zelle), "th" = table header (Kopf).',
+          reminder: 'Immer <thead> für Kopf, <tbody> für Daten verwenden!'
+        },
+        starter: `<!-- Erstelle eine Tabelle mit <table>, <thead>, <tbody> usw. -->`,
+        solution: /<table[\s\S]*<thead[\s\S]*<th>.*Name.*<\/th>[\s\S]*<th>.*Alter.*<\/th>[\s\S]*<tbody[\s\S]*<tr>[\s\S]*<td>[\s\S]*<\/td>[\s\S]*<\/tr>[\s\S]*<\/tbody>[\s\S]*<\/table>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const ths = div.querySelectorAll('th');
+          const tds = div.querySelectorAll('td');
+          return ths.length >= 2 && tds.length >= 2 && Array.from(ths).some(th => th.textContent.includes('Name')) && Array.from(ths).some(th => th.textContent.includes('Alter'));
+        },
+        feedback: {
+          success: 'Sehr gut, die Tabelle ist korrekt! 📊',
+          error: 'Die Tabelle ist unvollständig. Tipp: Nutze <table>, <thead>, <tbody>, <th>, <td>.'
+        }
+      },
+      {
+        title: 'Link einfügen',
+        description: 'Füge einen Link ein, der auf https://www.example.com zeigt und "Mehr erfahren" heißt.',
+        info: {
+          explanation: 'Mit <a href="...">Text</a> erstellst du Links.',
+          mnemonic: 'Merke: "a" steht für "anchor" (Anker) – verbindet deine Seite mit anderen.',
+          reminder: 'Das href-Attribut ist Pflicht!'
+        },
+        starter: `<!-- Füge hier einen Link ein -->`,
+        solution: /<a[^>]*href=["']https:\/\/www\.example\.com["'][^>]*>Mehr erfahren<\/a>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const a = div.querySelector('a[href="https://www.example.com"]');
+          return a && a.textContent.trim() === 'Mehr erfahren';
+        },
+        feedback: {
+          success: 'Perfekt, der Link ist korrekt! 🔗',
+          error: 'Der Link fehlt oder ist nicht korrekt. Tipp: <a href="https://www.example.com">Mehr erfahren</a>'
+        }
+      },
+      {
+        title: 'CSS-Styles anwenden',
+        description: 'Färbe alle <h1>-Überschriften blau mit einem <style>-Tag.',
+        info: {
+          explanation: 'Mit <style> kannst du CSS direkt im HTML schreiben.',
+          mnemonic: 'Eselsbrücke: CSS = Cascading Style Sheets – alles, was schön macht!',
+          reminder: 'CSS-Selektoren wie h1 { color: blue; } wirken auf alle passenden Elemente.'
+        },
+        starter: `<!-- Füge ein <style> Tag und eine <h1> Überschrift ein -->`,
+        solution: /<style[\s\S]*h1[\s\S]*color:[\s]*blue[\s;]*[\s\S]*<\/style>[\s\S]*<h1[\s\S]*<\/h1>/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const style = div.querySelector('style');
+          const h1 = div.querySelector('h1');
+          return style && h1 && /h1\s*{[^}]*color:\s*blue/.test(style.textContent);
+        },
+        feedback: {
+          success: 'Super, die Überschrift ist blau! 🎨',
+          error: 'Das <style>-Tag oder die Farbregel für h1 fehlt.'
+        }
+      },
+      {
+        title: 'Flexbox-Layout',
+        description: 'Erstelle ein Layout mit drei nebeneinanderstehenden Boxen mit Flexbox.',
+        info: {
+          explanation: 'Mit display:flex kannst du Elemente nebeneinander anordnen.',
+          mnemonic: 'Merke: Flex = flexibel! Flexbox macht Layouts einfach.',
+          reminder: 'display:flex immer auf das Elternelement setzen.'
+        },
+        starter: `<!-- Nutze <div style="display:flex">...</div> und drei Boxen -->`,
+        solution: /display\s*:\s*flex/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const flexDiv = Array.from(div.querySelectorAll('div')).find(d => d.style && d.style.display === 'flex');
+          if (!flexDiv) return false;
+          const children = flexDiv.querySelectorAll('div');
+          return children.length >= 3;
+        },
+        feedback: {
+          success: 'Sehr gut, Flexbox funktioniert! 📦📦📦',
+          error: 'Das Flexbox-Layout ist nicht korrekt. Tipp: <div style="display:flex">...<div>Box1</div>...</div>'
+        }
+      },
+      {
+        title: 'JS-Interaktion',
+        description: 'Schreibe einen Button, der beim Klicken den Text in einem <p>-Element auf "Hallo JavaScript!" ändert.',
+        info: {
+          explanation: 'Mit JavaScript kannst du Inhalte dynamisch verändern.',
+          mnemonic: 'Eselsbrücke: getElementById = "hol mir das Element mit dieser ID"',
+          reminder: 'ID eindeutig vergeben und im JS darauf zugreifen!'
+        },
+        starter: `<!-- Button und <p> mit JS-Interaktion -->`,
+        solution: /onclick=["'][^"']*document\.getElementById\(['"]msg['"]\)\.textContent\s*=\s*['"]Hallo JavaScript!["']/i,
+        test: (html) => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const btn = div.querySelector('button[onclick]');
+          const p = div.querySelector('p#msg');
+          return btn && p && btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("document.getElementById('msg').textContent = 'Hallo JavaScript!'");
+        },
+        feedback: {
+          success: 'Super, die Interaktion klappt! 🖱️➡️💬',
+          error: 'Der Button oder das JS-Event fehlt. Tipp: <button onclick="document.getElementById(\'msg\').textContent = \'Hallo JavaScript!\'"></button>'
+        }
+      }
+    ];
+
+    // --- UI Logic ---
+    let current = 0;
+    const challengeList = document.getElementById('challenge-list');
+    const challengeArea = document.getElementById('challenge-area');
+
+    function renderChallengeList() {
+      challengeList.innerHTML = '';
+      challenges.forEach((ch, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'challenge-btn' + (idx === current ? ' active' : '');
+        btn.textContent = `${idx+1}. ${ch.title}`;
+        btn.onclick = () => { current = idx; renderChallenge(); renderChallengeList(); };
+        challengeList.appendChild(btn);
+      });
+    }
+
+    function renderChallenge() {
+      const ch = challenges[current];
+      challengeArea.innerHTML = `
+        <div class="challenge-title">${ch.title}</div>
+        <div class="challenge-desc">${ch.description}</div>
+        <div class="challenge-info" style="background:#e0f2fe;border-left:5px solid #38bdf8;padding:1rem 1.5rem;margin-bottom:1.5rem;border-radius:8px;">
+          <div style="font-weight:600;margin-bottom:0.25rem;"><i class="fas fa-info-circle" style="color:#0ea5e9;"></i> Info:</div>
+          <div style="margin-bottom:0.25rem;">${ch.info.explanation}</div>
+          <div style="font-size:0.97em;color:#0369a1;margin-bottom:0.25rem;"><i class="fas fa-lightbulb"></i> Eselsbrücke: <span style="font-style:italic;">${ch.info.mnemonic}</span></div>
+          <div style="font-size:0.97em;color:#0d9488;"><i class="fas fa-bell"></i> Reminder: <span style="font-style:italic;">${ch.info.reminder}</span></div>
+        </div>
+        <div class="playground">
+          <div class="editor">
+            <label for="code">Dein Code:</label>
+            <textarea id="code"><!-- Hier deinen Code schreiben --></textarea>
+            <button class="run-btn"><i class="fas fa-play"></i> Vorschau</button>
+            <button class="reset-btn"><i class="fas fa-undo"></i> Zurücksetzen</button>
+            <button class="solution-btn"><i class="fas fa-lightbulb"></i> Lösung anzeigen</button>
+            <div id="feedback"></div>
+          </div>
+          <div class="preview">
+            <iframe id="preview-frame" sandbox="allow-scripts allow-forms" style="width:100%;height:220px;border:none;background:#fff;"></iframe>
+          </div>
+        </div>
+      `;
+      const textarea = document.getElementById('code');
+      const runBtn = challengeArea.querySelector('.run-btn');
+      const resetBtn = challengeArea.querySelector('.reset-btn');
+      const solutionBtn = challengeArea.querySelector('.solution-btn');
+      const feedback = document.getElementById('feedback');
+      const previewFrame = document.getElementById('preview-frame');
+
+      function updatePreview() {
+        const code = textarea.value;
+        previewFrame.srcdoc = code;
+      }
+      function checkSolution() {
+        const code = textarea.value;
+        let ok = false;
+        try {
+          ok = ch.test(code);
+        } catch(e) { ok = false; }
+        feedback.innerHTML = `<span class="feedback ${ok ? 'success' : 'error'}">${ok ? ch.feedback.success : ch.feedback.error}</span>`;
+        if(ok) {
+          feedback.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      }
+      runBtn.onclick = () => { updatePreview(); checkSolution(); };
+      resetBtn.onclick = () => { textarea.value = '<!-- Hier deinen Code schreiben -->'; updatePreview(); feedback.innerHTML = ''; };
+      solutionBtn.onclick = () => { textarea.value = ch.starter; updatePreview(); feedback.innerHTML = ''; };
+      textarea.oninput = () => { updatePreview(); feedback.innerHTML = ''; };
+      updatePreview();
+    }
+
+    renderChallengeList();
+    renderChallenge();
+  </script>
+</body>
+</html> 
