@@ -32,4 +32,25 @@
 
 ## 5. Erweiterungsideen
 - Weitere Aufgaben und Playgrounds können nach dem bestehenden Muster ergänzt werden.
-- Für interaktive Terminal-Eingaben kann das Python-Skript leicht angepasst werden (siehe Kommentare im Code). 
+- Für interaktive Terminal-Eingaben kann das Python-Skript leicht angepasst werden (siehe Kommentare im Code).
+
+## 6. Java & TypeScript Templates
+- Die Templates findest du unter:
+  - `java/basics/01_java_basics.java`
+  - `typescript/basics/01_typescript_basics.ts`
+- Vorgehen:
+  - Öffne das jeweilige Template in deiner IDE
+  - Lies die Info-Boxen und Aufgabenstellung
+  - Schreibe deine Lösung direkt in die vorgesehenen Bereiche
+  - Arbeite die Aufgaben von oben nach unten durch
+- Die Templates sind didaktisch aufgebaut und decken alle prüfungsrelevanten Grundlagen ab.
+
+## 7. SQL Template
+- Das Template findest du unter:
+  - `sql/basics/01_sql_basics.sql`
+- Vorgehen:
+  - Öffne das Template in deinem SQL-Editor oder einer Datenbank-IDE
+  - Lies die Info-Boxen und Aufgabenstellung
+  - Schreibe deine Lösung direkt in die vorgesehenen Bereiche
+  - Arbeite die Aufgaben von oben nach unten durch
+- Das Template ist didaktisch aufgebaut und deckt alle prüfungsrelevanten Grundlagen ab. 

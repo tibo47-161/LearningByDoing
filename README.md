@@ -12,6 +12,9 @@
 - **Python:** Moderne Lernumgebung mit automatischer Auswertung, Fortschrittstracking und Übungen
 - **React:** Komponenten, Beispiele und ein moderner Lern-Stack
 - **Tailwind CSS:** Utility-First-Beispiele und Playground
+- **Java:** Didaktisches Template mit allen prüfungsrelevanten Modulen unter `java/basics/01_java_basics.java`
+- **TypeScript:** Didaktisches Template mit allen prüfungsrelevanten Modulen unter `typescript/basics/01_typescript_basics.ts`
+- **SQL:** Didaktisches Template mit allen prüfungsrelevanten Modulen unter `sql/basics/01_sql_basics.sql`
 
 ## Quickstart
 1. **HTML/CSS/JS lernen:**
@@ -25,6 +28,15 @@
    - Lies die Aufgabenstellung, schreibe deine Lösung, erhalte sofort Feedback
 3. **React & Tailwind:**
    - Siehe die Beispiele und Komponenten in den jeweiligen Ordnern
+4. **Java:**
+   - Öffne das Template unter `java/basics/01_java_basics.java` in deiner IDE
+   - Arbeite die Aufgaben Schritt für Schritt durch
+5. **TypeScript:**
+   - Öffne das Template unter `typescript/basics/01_typescript_basics.ts` in deiner IDE
+   - Arbeite die Aufgaben Schritt für Schritt durch
+6. **SQL:**
+   - Öffne das Template unter `sql/basics/01_sql_basics.sql` in deinem SQL-Editor
+   - Arbeite die Aufgaben Schritt für Schritt durch
 
 ## Hinweise
 - Unvollständige oder fehlerhafte Module wurden entfernt
