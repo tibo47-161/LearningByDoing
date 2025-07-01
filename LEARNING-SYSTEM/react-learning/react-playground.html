@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React Playground – Immersiv & ADHS-freundlich</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
+    .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    h1 { text-align: center; }
+    .task-list { margin-bottom: 2rem; }
+    .task { background: #e1bee7; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .active { border: 2px solid #8e24aa; }
+    .info-box { background: #fffde7; border-left: 4px solid #ffd600; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+    .editor { width: 100%; min-height: 100px; font-family: monospace; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; }
+    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; }
+    .btn { background: #8e24aa; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; margin-right: 0.5rem; }
+    .btn:active { background: #4a148c; }
+    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; }
+    .progress { margin: 1rem 0; }
+    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 1px solid #8e24aa; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; }
+    .hidden { display: none; }
+  </style>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <button class="focus-mode" onclick="toggleFocus()">Fokusmodus: <span id="focus-status">Aus</span></button>
+  <div class="container">
+    <h1>React Playground</h1>
+    <div class="progress">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">2</span></div>
+    <div class="task-list" id="task-list"></div>
+    <div class="info-box" id="info-box"></div>
+    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen JSX/React-Code..."></textarea>
+    <div>
+      <button class="btn" onclick="runJSX()">Ausführen</button>
+      <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
+      <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
+    </div>
+    <div class="output" id="output"></div>
+    <div class="solution" id="solution"></div>
+    <div id="react-root"></div>
+  </div>
+  <script>
+    // Aufgaben, Lösungen, Info-Boxen
+    const tasks = [
+      {
+        title: "Einfache Komponente",
+        description: "Erstelle eine React-Komponente <b>Hello</b>, die <code>Hello, Welt!</code> rendert.",
+        info: "<b>Eselsbrücke:</b> In React: <code>function Hello() { return &lt;h1&gt;Hello, Welt!&lt;/h1&gt;; }</code>",
+        solution: "function Hello() { return <h1>Hello, Welt!</h1>; }\nReactDOM.render(<Hello />, document.getElementById('react-root'));",
+        check: (code) => code.includes("Hello") && code.includes("<h1>")
+      },
+      {
+        title: "Props nutzen",
+        description: "Passe die Komponente <b>Hello</b> so an, dass sie einen Namen als Prop erhält und <code>Hello, [Name]!</code> rendert. Rufe sie mit deinem Namen auf.",
+        info: "<b>Reminder:</b> Props werden als Funktionsargument übergeben: <code>function Hello(props) { ... }</code>",
+        solution: "function Hello(props) { return <h1>Hello, {props.name}!</h1>; }\nReactDOM.render(<Hello name=\"Max\" />, document.getElementById('react-root'));",
+        check: (code) => code.includes("props") && code.includes("name")
+      },
+      {
+        title: "State verwenden",
+        description: "Erstelle eine Komponente <b>Counter</b>, die einen Zähler im State hat und anzeigt.",
+        info: "Nutze useState: <code>const [count, setCount] = React.useState(0);</code>",
+        solution: "function Counter() { const [count, setCount] = React.useState(0); return <div>Zähler: {count}</div>; }\nReactDOM.render(<Counter />, document.getElementById('react-root'));",
+        check: (code) => code.includes("useState") && code.includes("count")
+      },
+      {
+        title: "Event-Handler",
+        description: "Erweitere <b>Counter</b> um einen Button, der den Zähler erhöht.",
+        info: "Button mit onClick: <code><button onClick={...}></button></code>",
+        solution: "function Counter() { const [count, setCount] = React.useState(0); return <div><div>Zähler: {count}</div><button onClick={() => setCount(count+1)}>Erhöhen</button></div>; }\nReactDOM.render(<Counter />, document.getElementById('react-root'));",
+        check: (code) => code.includes("onClick") && code.includes("setCount")
+      },
+      {
+        title: "Liste rendern",
+        description: "Rendere eine Liste von Namen als <code>&lt;li&gt;</code>-Elemente.",
+        info: "Nutze map: <code>{['Anna','Ben'].map(name =&gt; &lt;li&gt;{name}&lt;/li&gt;)}</code>",
+        solution: "function NamensListe() { const namen = ['Anna','Ben','Chris']; return <ul>{namen.map(name => <li key={name}>{name}</li>)}</ul>; }\nReactDOM.render(<NamensListe />, document.getElementById('react-root'));",
+        check: (code) => code.includes("map") && code.includes("<li>")
+      },
+      {
+        title: "Bedingtes Rendern",
+        description: "Zeige <code>Hallo, Gast!</code> nur, wenn die Variable <b>istEingeloggt</b> false ist.",
+        info: "Bedingung: <code>{!istEingeloggt && ...}</code>",
+        solution: "function App() { const istEingeloggt = false; return <div>{!istEingeloggt && <div>Hallo, Gast!</div>}</div>; }\nReactDOM.render(<App />, document.getElementById('react-root'));",
+        check: (code) => code.includes("istEingeloggt") && code.includes("&&")
+      },
+      {
+        title: "useEffect nutzen",
+        description: "Nutze <code>useEffect</code>, um beim Rendern <code>console.log('Hallo')</code> auszugeben.",
+        info: "useEffect: <code>React.useEffect(() =&gt; { ... }, [])</code>",
+        solution: "function App() { React.useEffect(() => { console.log('Hallo'); }, []); return <div>useEffect!</div>; }\nReactDOM.render(<App />, document.getElementById('react-root'));",
+        check: (code) => code.includes("useEffect") && code.includes("console.log")
+      },
+      {
+        title: "Formular & State",
+        description: "Erstelle ein Formular mit einem Eingabefeld und speichere den Wert im State.",
+        info: "Input mit value und onChange: <code><input value={...} onChange={...} /></code>",
+        solution: "function Formular() { const [wert, setWert] = React.useState(''); return <input value={wert} onChange={e => setWert(e.target.value)} />; }\nReactDOM.render(<Formular />, document.getElementById('react-root'));",
+        check: (code) => code.includes("onChange") && code.includes("useState")
+      },
+      {
+        title: "Lifting State Up",
+        description: "Lege zwei Komponenten an: <b>Parent</b> und <b>Child</b>. Der State (z.B. ein Zähler) liegt im Parent und wird als Prop an Child übergeben.",
+        info: "State im Parent, Übergabe als Prop: <code><Child count={count} /></code>",
+        solution: "function Child({count}) { return <div>Zähler: {count}</div>; }\nfunction Parent() { const [count, setCount] = React.useState(0); return <div><Child count={count} /><button onClick={() => setCount(count+1)}>+</button></div>; }\nReactDOM.render(<Parent />, document.getElementById('react-root'));",
+        check: (code) => code.includes("Parent") && code.includes("Child")
+      },
+      {
+        title: "Custom Hook",
+        description: "Schreibe einen eigenen Hook <b>useHallo</b>, der <code>Hallo</code> zurückgibt und nutze ihn in einer Komponente.",
+        info: "Custom Hook: <code>function useHallo() { ... }</code>",
+        solution: "function useHallo() { return 'Hallo'; }\nfunction App() { const hallo = useHallo(); return <div>{hallo}</div>; }\nReactDOM.render(<App />, document.getElementById('react-root'));",
+        check: (code) => code.includes("useHallo") && code.includes("return 'Hallo'")
+      }
+    ];
+    let currentTask = 0;
+    document.getElementById('total-tasks').textContent = tasks.length;
+    function renderTask() {
+      document.getElementById('current-task').textContent = currentTask + 1;
+      const t = tasks[currentTask];
+      document.getElementById('task-list').innerHTML = `<div class='task active'><b>${t.title}</b><br>${t.description}</div>`;
+      document.getElementById('info-box').innerHTML = t.info;
+      document.getElementById('editor').value = '';
+      document.getElementById('output').textContent = '';
+      document.getElementById('solution').style.display = 'none';
+      document.getElementById('react-root').innerHTML = '';
+    }
+    function showSolution() {
+      document.getElementById('solution').textContent = 'Lösung: ' + tasks[currentTask].solution;
+      document.getElementById('solution').style.display = 'block';
+    }
+    function nextTask() {
+      if (currentTask < tasks.length - 1) {
+        currentTask++;
+        renderTask();
+      } else {
+        alert('Super! Du hast alle Aufgaben gelöst! 🎉');
+      }
+    }
+    function runJSX() {
+      const jsxCode = document.getElementById('editor').value;
+      let result = '';
+      try {
+        const code = Babel.transform(jsxCode, { presets: ['react'] }).code;
+        // eslint-disable-next-line no-new-func
+        new Function('React', 'ReactDOM', 'document', code)(React, ReactDOM, document);
+        result = '<div style="color:green;font-weight:bold;">✅ Ausgeführt! Siehe unten.</div>';
+        // Feedback
+        if (tasks[currentTask].check(jsxCode)) {
+          result += '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
+        } else {
+          result += '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!</div>';
+        }
+      } catch (e) {
+        result = '<span style="color:red;">Fehler: ' + e.message + '</span>';
+      }
+      document.getElementById('output').innerHTML = result;
+    }
+    function toggleFocus() {
+      const c = document.querySelector('.container');
+      const btn = document.querySelector('.focus-mode');
+      if (c.style.boxShadow) {
+        c.style.boxShadow = '';
+        c.style.background = '#fff';
+        btn.style.background = '#fff';
+        document.getElementById('focus-status').textContent = 'Aus';
+      } else {
+        c.style.boxShadow = '0 0 0 4px #8e24aa';
+        c.style.background = '#e1bee7';
+        btn.style.background = '#8e24aa';
+        document.getElementById('focus-status').textContent = 'An';
+      }
+    }
+    renderTask();
+  </script>
+</body>
+</html> 

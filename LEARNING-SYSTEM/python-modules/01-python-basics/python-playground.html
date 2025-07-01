@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Playground – Immersiv & ADHS-freundlich</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    h1 { text-align: center; }
+    .task-list { margin-bottom: 2rem; }
+    .task { background: #e0f7fa; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .active { border: 2px solid #00bcd4; }
+    .info-box { background: #fffde7; border-left: 4px solid #ffd600; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+    .editor { width: 100%; min-height: 80px; font-family: monospace; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; }
+    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; }
+    .btn { background: #00bcd4; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; margin-right: 0.5rem; }
+    .btn:active { background: #008c9e; }
+    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; }
+    .progress { margin: 1rem 0; }
+    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 1px solid #00bcd4; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; }
+    .hidden { display: none; }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.5/brython.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.5/brython_stdlib.js"></script>
+</head>
+<body onload="brython()">
+  <button class="focus-mode" onclick="toggleFocus()">Fokusmodus: <span id="focus-status">Aus</span></button>
+  <div class="container">
+    <h1>Python Playground</h1>
+    <div class="progress">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">2</span></div>
+    <div class="task-list" id="task-list"></div>
+    <div class="info-box" id="info-box"></div>
+    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen Python-Code..."></textarea>
+    <div>
+      <button class="btn" onclick="runPy()">Ausführen</button>
+      <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
+      <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
+    </div>
+    <div class="output" id="output"></div>
+    <div class="solution" id="solution"></div>
+  </div>
+  <script>
+    // Aufgaben, Lösungen, Info-Boxen
+    const tasks = [
+      {
+        title: "Variable und Ausgabe",
+        description: "Lege eine Variable <b>name</b> an und gib sie mit <code>print</code> aus.",
+        info: "<b>Eselsbrücke:</b> In Python schreibst du z.B. <code>name = 'Max'</code> und <code>print(name)</code>.",
+        solution: "name = 'Max'\nprint(name)",
+        check: (code) => code.includes("print") && code.includes("name")
+      },
+      {
+        title: "if/else",
+        description: "Schreibe ein Programm, das prüft, ob eine Zahl <b>n</b> größer als 10 ist und entsprechend <code>print</code> ausgibt.",
+        info: "<b>Reminder:</b> In Python: <code>if n > 10:\n    print('Größer als 10')</code>",
+        solution: "n = 12\nif n > 10:\n    print('Größer als 10')\nelse:\n    print('Nicht größer als 10')",
+        check: (code) => code.includes("if") && code.includes("print")
+      },
+      {
+        title: "Listen",
+        description: "Lege eine Liste <b>zahlen</b> mit den Werten 1, 2, 3 an und gib sie aus.",
+        info: "Listen-Syntax: <code>zahlen = [1, 2, 3]</code>",
+        solution: "zahlen = [1, 2, 3]\nprint(zahlen)",
+        check: (code) => code.includes("zahlen") && code.includes("print")
+      },
+      {
+        title: "Dictionaries",
+        description: "Lege ein Dictionary <b>person</b> mit name und alter an und gib es aus.",
+        info: "Dictionary-Syntax: <code>person = {'name': 'Max', 'alter': 25}</code>",
+        solution: "person = {'name': 'Max', 'alter': 25}\nprint(person)",
+        check: (code) => code.includes("person") && code.includes("print")
+      },
+      {
+        title: "for-Schleife",
+        description: "Gib alle Zahlen von 1 bis 3 mit einer <code>for</code>-Schleife aus.",
+        info: "<code>for zahl in [1,2,3]: print(zahl)</code>",
+        solution: "for zahl in [1,2,3]:\n    print(zahl)",
+        check: (code) => code.includes("for") && code.includes("print")
+      },
+      {
+        title: "Funktion schreiben",
+        description: "Schreibe eine Funktion <b>add</b>, die zwei Zahlen addiert und das Ergebnis zurückgibt. Gib das Ergebnis für 2 und 3 aus.",
+        info: "<code>def add(a, b): return a + b</code>",
+        solution: "def add(a, b):\n    return a + b\nprint(add(2, 3))",
+        check: (code) => code.includes("def add") && code.includes("print")
+      },
+      {
+        title: "Fehlerbehandlung",
+        description: "Fange einen Fehler mit try/except ab und gib eine Fehlermeldung aus.",
+        info: "<code>try: ... except Exception as e: print('Fehler')</code>",
+        solution: "try:\n    raise Exception('Fehler!')\nexcept Exception as e:\n    print('Fehler gefangen!')",
+        check: (code) => code.includes("try") && code.includes("except")
+      },
+      {
+        title: "Klasse erstellen",
+        description: "Erstelle eine Klasse <b>Tier</b> mit einem Namen als Attribut und einer Methode <code>sprich()</code>.",
+        info: "<code>class Tier: ...</code>",
+        solution: "class Tier:\n    def __init__(self, name):\n        self.name = name\n    def sprich(self):\n        print('Ich bin ' + self.name)\nkatze = Tier('Mieze')\nkatze.sprich()",
+        check: (code) => code.includes("class Tier") && code.includes("sprich")
+      },
+      {
+        title: "List Comprehension",
+        description: "Erstelle eine Liste mit den Quadraten der Zahlen 1 bis 3 mit List Comprehension.",
+        info: "<code>[x*x for x in [1,2,3]]</code>",
+        solution: "quadrate = [x*x for x in [1,2,3]]\nprint(quadrate)",
+        check: (code) => code.includes("for") && code.includes("*")
+      },
+      {
+        title: "Modul importieren",
+        description: "Importiere das Modul <b>math</b> und gib <code>math.sqrt(16)</code> aus.",
+        info: "<code>import math</code>",
+        solution: "import math\nprint(math.sqrt(16))",
+        check: (code) => code.includes("import math") && code.includes("sqrt")
+      }
+    ];
+    let currentTask = 0;
+    document.getElementById('total-tasks').textContent = tasks.length;
+    function renderTask() {
+      document.getElementById('current-task').textContent = currentTask + 1;
+      const t = tasks[currentTask];
+      document.getElementById('task-list').innerHTML = `<div class='task active'><b>${t.title}</b><br>${t.description}</div>`;
+      document.getElementById('info-box').innerHTML = t.info;
+      document.getElementById('editor').value = '';
+      document.getElementById('output').textContent = '';
+      document.getElementById('solution').style.display = 'none';
+    }
+    function showSolution() {
+      document.getElementById('solution').textContent = 'Lösung: ' + tasks[currentTask].solution;
+      document.getElementById('solution').style.display = 'block';
+    }
+    function nextTask() {
+      if (currentTask < tasks.length - 1) {
+        currentTask++;
+        renderTask();
+      } else {
+        alert('Super! Du hast alle Aufgaben gelöst! 🎉');
+      }
+    }
+    function runPy() {
+      const pyCode = document.getElementById('editor').value;
+      let result = '';
+      try {
+        // Fange print-Ausgaben ab
+        let output = [];
+        window.__BRYTHON__ && (__BRYTHON__.stdout = {
+          write: function(s) { output.push(s); },
+          flush: function() {}
+        });
+        eval(__BRYTHON__.python_to_js(pyCode));
+        result = output.join('');
+        // Feedback
+        if (tasks[currentTask].check(pyCode)) {
+          result += '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
+        } else {
+          result += '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!</div>';
+        }
+      } catch (e) {
+        result = '<span style="color:red;">Fehler: ' + e.message + '</span>';
+      }
+      document.getElementById('output').innerHTML = result;
+    }
+    function toggleFocus() {
+      const c = document.querySelector('.container');
+      const btn = document.querySelector('.focus-mode');
+      if (c.style.boxShadow) {
+        c.style.boxShadow = '';
+        c.style.background = '#fff';
+        btn.style.background = '#fff';
+        document.getElementById('focus-status').textContent = 'Aus';
+      } else {
+        c.style.boxShadow = '0 0 0 4px #00bcd4';
+        c.style.background = '#e0f7fa';
+        btn.style.background = '#00bcd4';
+        document.getElementById('focus-status').textContent = 'An';
+      }
+    }
+    renderTask();
+  </script>
+</body>
+</html> 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL Playground – Immersiv & ADHS-freundlich</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    h1 { text-align: center; }
+    .task-list { margin-bottom: 2rem; }
+    .task { background: #e0f7fa; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .active { border: 2px solid #00bcd4; }
+    .info-box { background: #fffde7; border-left: 4px solid #ffd600; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+    .editor { width: 100%; min-height: 80px; font-family: monospace; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; }
+    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; }
+    .btn { background: #00bcd4; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; margin-right: 0.5rem; }
+    .btn:active { background: #008c9e; }
+    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; }
+    .progress { margin: 1rem 0; }
+    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 1px solid #00bcd4; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; }
+    .hidden { display: none; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+  <button class="focus-mode" onclick="toggleFocus()">Fokusmodus: <span id="focus-status">Aus</span></button>
+  <div class="container">
+    <h1>SQL Playground</h1>
+    <div class="progress">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">2</span></div>
+    <div class="task-list" id="task-list"></div>
+    <div class="info-box" id="info-box"></div>
+    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen SQL-Befehl..."></textarea>
+    <div>
+      <button class="btn" onclick="runSQL()">Ausführen</button>
+      <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
+      <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
+    </div>
+    <div class="output" id="output"></div>
+    <div class="solution" id="solution"></div>
+  </div>
+  <script>
+    // Aufgaben, Lösungen, Info-Boxen
+    const tasks = [
+      {
+        title: "SELECT – Alle Daten anzeigen",
+        description: "Zeige alle Daten aus der Tabelle <b>users</b> an.",
+        info: "<b>Eselsbrücke:</b> SELECT * FROM ... zeigt alle Spalten an. Das Sternchen * steht für 'alles'.",
+        solution: "SELECT * FROM users;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users;'
+      },
+      {
+        title: "WHERE – Nur bestimmte Zeilen",
+        description: "Zeige alle Nutzer mit dem Alter 18 an.",
+        info: "<b>Reminder:</b> Mit WHERE kannst du Zeilen filtern. Beispiel: SELECT * FROM users WHERE age = 18;",
+        solution: "SELECT * FROM users WHERE age = 18;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users where age = 18;'
+      },
+      {
+        title: "ORDER BY – Sortieren",
+        description: "Zeige alle Nutzer, sortiert nach Alter (aufsteigend).",
+        info: "Nutze ORDER BY: SELECT * FROM users ORDER BY age;",
+        solution: "SELECT * FROM users ORDER BY age;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users order by age;'
+      },
+      {
+        title: "LIMIT – Begrenzen",
+        description: "Zeige nur die ersten 2 Nutzer an (sortiert nach ID).",
+        info: "Nutze LIMIT: SELECT * FROM users ORDER BY id LIMIT 2;",
+        solution: "SELECT * FROM users ORDER BY id LIMIT 2;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users order by id limit 2;'
+      },
+      {
+        title: "INSERT – Neue Daten einfügen",
+        description: "Füge einen Nutzer 'Dana', 25 Jahre alt, hinzu.",
+        info: "INSERT INTO users (name, age) VALUES ('Dana', 25);",
+        solution: "INSERT INTO users (name, age) VALUES ('Dana', 25);",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "insert into users (name, age) values ('dana', 25);"
+      },
+      {
+        title: "UPDATE – Daten ändern",
+        description: "Setze das Alter von 'Ben' auf 22.",
+        info: "UPDATE users SET age = 22 WHERE name = 'Ben';",
+        solution: "UPDATE users SET age = 22 WHERE name = 'Ben';",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "update users set age = 22 where name = 'ben';"
+      },
+      {
+        title: "DELETE – Daten löschen",
+        description: "Lösche den Nutzer mit dem Namen 'Chris'.",
+        info: "DELETE FROM users WHERE name = 'Chris';",
+        solution: "DELETE FROM users WHERE name = 'Chris';",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "delete from users where name = 'chris';"
+      },
+      {
+        title: "JOIN – Tabellen verbinden",
+        description: "Verbinde die Tabellen users und orders, um alle Bestellungen mit Nutzernamen anzuzeigen.",
+        info: "Nutze INNER JOIN: SELECT users.name, orders.product FROM users INNER JOIN orders ON users.id = orders.user_id;",
+        solution: "SELECT users.name, orders.product FROM users INNER JOIN orders ON users.id = orders.user_id;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select users.name, orders.product from users inner join orders on users.id = orders.user_id;'
+      },
+      {
+        title: "GROUP BY & Aggregatfunktion",
+        description: "Zeige für jedes Alter die Anzahl der Nutzer an.",
+        info: "Nutze GROUP BY und COUNT: SELECT age, COUNT(*) FROM users GROUP BY age;",
+        solution: "SELECT age, COUNT(*) FROM users GROUP BY age;",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select age, count(*) from users group by age;'
+      },
+      {
+        title: "Subquery – Unterabfrage",
+        description: "Zeige alle Nutzer, die älter als der Durchschnitt sind.",
+        info: "Nutze Subquery: SELECT * FROM users WHERE age > (SELECT AVG(age) FROM users);",
+        solution: "SELECT * FROM users WHERE age > (SELECT AVG(age) FROM users);",
+        check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users where age > (select avg(age) from users);'
+      }
+    ];
+    let currentTask = 0;
+    let db;
+    document.getElementById('total-tasks').textContent = tasks.length;
+    function renderTask() {
+      document.getElementById('current-task').textContent = currentTask + 1;
+      const t = tasks[currentTask];
+      document.getElementById('task-list').innerHTML = `<div class='task active'><b>${t.title}</b><br>${t.description}</div>`;
+      document.getElementById('info-box').innerHTML = t.info;
+      document.getElementById('editor').value = '';
+      document.getElementById('output').textContent = '';
+      document.getElementById('solution').style.display = 'none';
+    }
+    function showSolution() {
+      document.getElementById('solution').textContent = 'Lösung: ' + tasks[currentTask].solution;
+      document.getElementById('solution').style.display = 'block';
+    }
+    function nextTask() {
+      if (currentTask < tasks.length - 1) {
+        currentTask++;
+        renderTask();
+      } else {
+        alert('Super! Du hast alle Aufgaben gelöst! 🎉');
+      }
+    }
+    function runSQL() {
+      const sql = document.getElementById('editor').value;
+      if (!db) return;
+      let result = '';
+      try {
+        const res = db.exec(sql);
+        if (res.length > 0) {
+          // Tabelle als HTML
+          const columns = res[0].columns;
+          const values = res[0].values;
+          result = '<table border="1" cellpadding="4"><tr>' + columns.map(c => `<th>${c}</th>`).join('') + '</tr>' +
+            values.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('') + '</table>';
+        } else {
+          result = 'Kein Ergebnis (vielleicht ein Fehler oder keine Daten gefunden).';
+        }
+        // Feedback
+        if (tasks[currentTask].check(sql)) {
+          result += '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
+        } else {
+          result += '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!</div>';
+        }
+      } catch (e) {
+        result = '<span style="color:red;">Fehler: ' + e.message + '</span>';
+      }
+      document.getElementById('output').innerHTML = result;
+    }
+    function toggleFocus() {
+      const c = document.querySelector('.container');
+      const btn = document.querySelector('.focus-mode');
+      if (c.style.boxShadow) {
+        c.style.boxShadow = '';
+        c.style.background = '#fff';
+        btn.style.background = '#fff';
+        document.getElementById('focus-status').textContent = 'Aus';
+      } else {
+        c.style.boxShadow = '0 0 0 4px #00bcd4';
+        c.style.background = '#e0f7fa';
+        btn.style.background = '#00bcd4';
+        document.getElementById('focus-status').textContent = 'An';
+      }
+    }
+    // Init DB
+    window.initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` }).then(SQL => {
+      db = new SQL.Database();
+      db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER);");
+      db.run("INSERT INTO users (name, age) VALUES ('Anna', 18), ('Ben', 21), ('Chris', 18);");
+      renderTask();
+    });
+  </script>
+</body>
+</html> 

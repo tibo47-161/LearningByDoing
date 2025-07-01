@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeScript Playground – Immersiv & ADHS-freundlich</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f7fafc; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 2rem; }
+    h1 { text-align: center; }
+    .task-list { margin-bottom: 2rem; }
+    .task { background: #e3f2fd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .active { border: 2px solid #2196f3; }
+    .info-box { background: #fffde7; border-left: 4px solid #ffd600; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+    .editor { width: 100%; min-height: 80px; font-family: monospace; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; padding: 0.5rem; }
+    .output { background: #f1f8e9; border-radius: 6px; padding: 1rem; margin-top: 1rem; min-height: 2rem; }
+    .btn { background: #2196f3; color: #fff; border: none; border-radius: 6px; padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; margin-right: 0.5rem; }
+    .btn:active { background: #1565c0; }
+    .solution { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 1rem; margin: 1rem 0; border-radius: 6px; display: none; }
+    .progress { margin: 1rem 0; }
+    .focus-mode { position: fixed; top: 1rem; right: 1rem; background: #fff; border: 1px solid #2196f3; border-radius: 6px; padding: 0.5rem 1rem; cursor: pointer; z-index: 10; }
+    .hidden { display: none; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/typescript@5.4.5/lib/typescript.js"></script>
+</head>
+<body>
+  <button class="focus-mode" onclick="toggleFocus()">Fokusmodus: <span id="focus-status">Aus</span></button>
+  <div class="container">
+    <h1>TypeScript Playground</h1>
+    <div class="progress">Aufgabe <span id="current-task">1</span> / <span id="total-tasks">2</span></div>
+    <div class="task-list" id="task-list"></div>
+    <div class="info-box" id="info-box"></div>
+    <textarea class="editor" id="editor" placeholder="Schreibe hier deinen TypeScript-Code..."></textarea>
+    <div>
+      <button class="btn" onclick="runTS()">Ausführen</button>
+      <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
+      <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
+    </div>
+    <div class="output" id="output"></div>
+    <div class="solution" id="solution"></div>
+  </div>
+  <script>
+    // Aufgaben, Lösungen, Info-Boxen
+    const tasks = [
+      {
+        title: "Variablen deklarieren",
+        description: "Deklariere eine Variable <b>name</b> vom Typ string und weise ihr deinen Namen zu. Gib sie mit <code>console.log</code> aus.",
+        info: "<b>Eselsbrücke:</b> In TypeScript schreibst du z.B. <code>let name: string = 'Max';</code>",
+        solution: "let name: string = 'Max';\nconsole.log(name);",
+        check: (js) => js.includes("console.log") && js.includes("name")
+      },
+      {
+        title: "Funktion mit Typen",
+        description: "Schreibe eine Funktion <b>add</b>, die zwei Zahlen entgegennimmt und ihre Summe zurückgibt. Gib das Ergebnis für 2 und 3 mit <code>console.log</code> aus.",
+        info: "<b>Reminder:</b> Typen werden so geschrieben: <code>function add(a: number, b: number): number { ... }</code>",
+        solution: "function add(a: number, b: number): number { return a + b; }\nconsole.log(add(2, 3));",
+        check: (js) => js.includes("function add") && js.includes("console.log")
+      },
+      {
+        title: "Arrays & Typen",
+        description: "Lege ein Array <b>zahlen</b> vom Typ number[] an und gib es mit <code>console.log</code> aus.",
+        info: "Array-Syntax: <code>let zahlen: number[] = [1,2,3];</code>",
+        solution: "let zahlen: number[] = [1,2,3];\nconsole.log(zahlen);",
+        check: (js) => js.includes("let zahlen") && js.includes("console.log")
+      },
+      {
+        title: "Objekte & Typen",
+        description: "Lege ein Objekt <b>person</b> mit den Feldern name (string) und alter (number) an und gib es aus.",
+        info: "Objekt-Syntax: <code>let person = { name: 'Max', alter: 25 };</code>",
+        solution: "let person = { name: 'Max', alter: 25 };\nconsole.log(person);",
+        check: (js) => js.includes("let person") && js.includes("console.log")
+      },
+      {
+        title: "Interface nutzen",
+        description: "Definiere ein Interface <b>Auto</b> mit den Feldern marke (string) und baujahr (number). Lege ein passendes Objekt an.",
+        info: "Interface-Syntax: <code>interface Auto { marke: string; baujahr: number; }</code>",
+        solution: "interface Auto { marke: string; baujahr: number; }\nlet meinAuto: Auto = { marke: 'VW', baujahr: 2020 };\nconsole.log(meinAuto);",
+        check: (js) => js.includes("interface Auto") && js.includes("console.log")
+      },
+      {
+        title: "Klasse erstellen",
+        description: "Erstelle eine Klasse <b>Tier</b> mit einem Namen als Eigenschaft und einer Methode <code>sprich()</code>, die <code>console.log</code> nutzt.",
+        info: "Klassen-Syntax: <code>class Tier { ... }</code>",
+        solution: "class Tier { name: string; constructor(name: string) { this.name = name; } sprich() { console.log('Ich bin ' + this.name); } }\nlet katze = new Tier('Mieze');\nkatze.sprich();",
+        check: (js) => js.includes("class Tier") && js.includes("sprich")
+      },
+      {
+        title: "Vererbung",
+        description: "Leite eine Klasse <b>Hund</b> von <b>Tier</b> ab und überschreibe die Methode <code>sprich()</code>.",
+        info: "Vererbung: <code>class Hund extends Tier { ... }</code>",
+        solution: "class Tier { name: string; constructor(name: string) { this.name = name; } sprich() { console.log('Ich bin ' + this.name); } }\nclass Hund extends Tier { sprich() { console.log('Wuff! Ich bin ' + this.name); } }\nlet bello = new Hund('Bello');\nbello.sprich();",
+        check: (js) => js.includes("class Hund") && js.includes("extends Tier")
+      },
+      {
+        title: "Generics",
+        description: "Schreibe eine Funktion <b>identität</b>, die einen Wert beliebigen Typs zurückgibt (Generics).",
+        info: "Generics: <code>function identität<T>(wert: T): T { return wert; }</code>",
+        solution: "function identität<T>(wert: T): T { return wert; }\nconsole.log(identität<string>('Hallo'));",
+        check: (js) => js.includes("function identität") && js.includes("console.log")
+      },
+      {
+        title: "Fehlerbehandlung",
+        description: "Fange einen Fehler mit try/catch ab und gib eine Fehlermeldung mit <code>console.log</code> aus.",
+        info: "try/catch: <code>try { ... } catch(e) { ... }</code>",
+        solution: "try { throw new Error('Fehler!'); } catch(e) { console.log('Fehler gefangen!'); }",
+        check: (js) => js.includes("try") && js.includes("catch")
+      },
+      {
+        title: "Union Types",
+        description: "Deklariere eine Variable, die entweder eine Zahl oder einen String aufnehmen kann.",
+        info: "Union Types: <code>let wert: number | string;</code>",
+        solution: "let wert: number | string = 'Hallo';\nconsole.log(wert);",
+        check: (js) => js.includes("number | string") && js.includes("console.log")
+      }
+    ];
+    let currentTask = 0;
+    document.getElementById('total-tasks').textContent = tasks.length;
+    function renderTask() {
+      document.getElementById('current-task').textContent = currentTask + 1;
+      const t = tasks[currentTask];
+      document.getElementById('task-list').innerHTML = `<div class='task active'><b>${t.title}</b><br>${t.description}</div>`;
+      document.getElementById('info-box').innerHTML = t.info;
+      document.getElementById('editor').value = '';
+      document.getElementById('output').textContent = '';
+      document.getElementById('solution').style.display = 'none';
+    }
+    function showSolution() {
+      document.getElementById('solution').textContent = 'Lösung: ' + tasks[currentTask].solution;
+      document.getElementById('solution').style.display = 'block';
+    }
+    function nextTask() {
+      if (currentTask < tasks.length - 1) {
+        currentTask++;
+        renderTask();
+      } else {
+        alert('Super! Du hast alle Aufgaben gelöst! 🎉');
+      }
+    }
+    function runTS() {
+      const tsCode = document.getElementById('editor').value;
+      let jsCode = '';
+      let result = '';
+      try {
+        jsCode = window.ts.transpile(tsCode);
+        // Fange console.log ab
+        let logs = [];
+        const oldLog = console.log;
+        console.log = (...args) => { logs.push(args.join(' ')); };
+        try {
+          eval(jsCode);
+        } catch (e) {
+          result = '<span style="color:red;">Fehler bei der Ausführung: ' + e.message + '</span>';
+        }
+        console.log = oldLog;
+        if (!result) {
+          result = logs.length ? logs.map(l => `<div>${l}</div>`).join('') : 'Kein Output.';
+        }
+        // Feedback
+        if (tasks[currentTask].check(jsCode)) {
+          result += '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
+        } else {
+          result += '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box!</div>';
+        }
+      } catch (e) {
+        result = '<span style="color:red;">Fehler: ' + e.message + '</span>';
+      }
+      document.getElementById('output').innerHTML = result;
+    }
+    function toggleFocus() {
+      const c = document.querySelector('.container');
+      const btn = document.querySelector('.focus-mode');
+      if (c.style.boxShadow) {
+        c.style.boxShadow = '';
+        c.style.background = '#fff';
+        btn.style.background = '#fff';
+        document.getElementById('focus-status').textContent = 'Aus';
+      } else {
+        c.style.boxShadow = '0 0 0 4px #2196f3';
+        c.style.background = '#e3f2fd';
+        btn.style.background = '#2196f3';
+        document.getElementById('focus-status').textContent = 'An';
+      }
+    }
+    renderTask();
+  </script>
+</body>
+</html> 
