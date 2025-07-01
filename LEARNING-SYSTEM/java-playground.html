@@ -32,6 +32,7 @@
     <div class="info-box" id="info-box"></div>
     <textarea class="editor" id="editor" placeholder="Schreibe hier deinen Java-Code..."></textarea>
     <div>
+      <button class="btn" onclick="checkSolution()">Überprüfen</button>
       <button class="btn" onclick="showSolution()">Lösung anzeigen</button>
       <button class="btn" onclick="nextTask()">Nächste Aufgabe</button>
     </div>
@@ -140,6 +141,17 @@
         btn.style.background = '#ff9800';
         document.getElementById('focus-status').textContent = 'An';
       }
+    }
+    function checkSolution() {
+      const userCode = document.getElementById('editor').value.trim();
+      const solution = tasks[currentTask].solution.trim();
+      let result = '';
+      if (userCode === solution) {
+        result = '<div style="color:green;font-weight:bold;">✅ Richtig! Super gemacht!</div>';
+      } else {
+        result = '<div style="color:#e65100;font-weight:bold;">❌ Noch nicht ganz richtig. Tipp: Lies die Info-Box oder vergleiche die Syntax!</div>';
+      }
+      document.getElementById('output').innerHTML = result;
     }
     renderTask();
   </script>

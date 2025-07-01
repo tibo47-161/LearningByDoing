@@ -45,70 +45,70 @@
       {
         title: "SELECT – Alle Daten anzeigen",
         description: "Zeige alle Daten aus der Tabelle <b>users</b> an.",
-        info: "<b>Eselsbrücke:</b> SELECT * FROM ... zeigt alle Spalten an. Das Sternchen * steht für 'alles'.",
+        info: "<b>Hinweis:</b> Das Sternchen * steht für 'alle Spalten'.",
         solution: "SELECT * FROM users;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users;'
       },
       {
         title: "WHERE – Nur bestimmte Zeilen",
         description: "Zeige alle Nutzer mit dem Alter 18 an.",
-        info: "<b>Reminder:</b> Mit WHERE kannst du Zeilen filtern. Beispiel: SELECT * FROM users WHERE age = 18;",
+        info: "<b>Hinweis:</b> Mit WHERE kannst du Zeilen filtern. Überlege: Wie prüfst du, ob das Alter 18 ist?",
         solution: "SELECT * FROM users WHERE age = 18;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users where age = 18;'
       },
       {
         title: "ORDER BY – Sortieren",
         description: "Zeige alle Nutzer, sortiert nach Alter (aufsteigend).",
-        info: "Nutze ORDER BY: SELECT * FROM users ORDER BY age;",
+        info: "<b>Hinweis:</b> Mit ORDER BY kannst du die Reihenfolge der Ergebnisse bestimmen.",
         solution: "SELECT * FROM users ORDER BY age;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users order by age;'
       },
       {
         title: "LIMIT – Begrenzen",
         description: "Zeige nur die ersten 2 Nutzer an (sortiert nach ID).",
-        info: "Nutze LIMIT: SELECT * FROM users ORDER BY id LIMIT 2;",
+        info: "<b>Hinweis:</b> LIMIT begrenzt die Anzahl der ausgegebenen Zeilen.",
         solution: "SELECT * FROM users ORDER BY id LIMIT 2;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users order by id limit 2;'
       },
       {
         title: "INSERT – Neue Daten einfügen",
         description: "Füge einen Nutzer 'Dana', 25 Jahre alt, hinzu.",
-        info: "INSERT INTO users (name, age) VALUES ('Dana', 25);",
+        info: "<b>Syntax-Tipp:</b> Neue Zeilen werden mit INSERT INTO ... VALUES (...) eingefügt.",
         solution: "INSERT INTO users (name, age) VALUES ('Dana', 25);",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "insert into users (name, age) values ('dana', 25);"
       },
       {
         title: "UPDATE – Daten ändern",
         description: "Setze das Alter von 'Ben' auf 22.",
-        info: "UPDATE users SET age = 22 WHERE name = 'Ben';",
+        info: "<b>Hinweis:</b> Mit UPDATE ... SET ... WHERE ... kannst du Werte ändern.",
         solution: "UPDATE users SET age = 22 WHERE name = 'Ben';",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "update users set age = 22 where name = 'ben';"
       },
       {
         title: "DELETE – Daten löschen",
         description: "Lösche den Nutzer mit dem Namen 'Chris'.",
-        info: "DELETE FROM users WHERE name = 'Chris';",
+        info: "<b>Hinweis:</b> Mit DELETE FROM ... WHERE ... entfernst du Zeilen.",
         solution: "DELETE FROM users WHERE name = 'Chris';",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === "delete from users where name = 'chris';"
       },
       {
         title: "JOIN – Tabellen verbinden",
         description: "Verbinde die Tabellen users und orders, um alle Bestellungen mit Nutzernamen anzuzeigen.",
-        info: "Nutze INNER JOIN: SELECT users.name, orders.product FROM users INNER JOIN orders ON users.id = orders.user_id;",
+        info: "<b>Hinweis:</b> Mit JOIN kannst du Daten aus mehreren Tabellen kombinieren. Überlege: Wie verknüpfst du Nutzer und Bestellungen?",
         solution: "SELECT users.name, orders.product FROM users INNER JOIN orders ON users.id = orders.user_id;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select users.name, orders.product from users inner join orders on users.id = orders.user_id;'
       },
       {
         title: "GROUP BY & Aggregatfunktion",
         description: "Zeige für jedes Alter die Anzahl der Nutzer an.",
-        info: "Nutze GROUP BY und COUNT: SELECT age, COUNT(*) FROM users GROUP BY age;",
+        info: "<b>Hinweis:</b> Mit GROUP BY kannst du Ergebnisse gruppieren. COUNT(*) zählt die Zeilen je Gruppe.",
         solution: "SELECT age, COUNT(*) FROM users GROUP BY age;",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select age, count(*) from users group by age;'
       },
       {
         title: "Subquery – Unterabfrage",
         description: "Zeige alle Nutzer, die älter als der Durchschnitt sind.",
-        info: "Nutze Subquery: SELECT * FROM users WHERE age > (SELECT AVG(age) FROM users);",
+        info: "<b>Hinweis:</b> Eine Subquery ist eine Abfrage in Klammern innerhalb einer WHERE-Bedingung.",
         solution: "SELECT * FROM users WHERE age > (SELECT AVG(age) FROM users);",
         check: (sql) => sql.trim().toLowerCase().replace(/\s+/g, ' ') === 'select * from users where age > (select avg(age) from users);'
       }
