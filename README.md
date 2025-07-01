@@ -84,3 +84,38 @@ Neben den interaktiven Playgrounds gibt es klassische Moduldateien, die als Übu
   - Experimentiere mit den Utility-Klassen direkt im Code.
 
 > **Hinweis:** Diese klassischen Moduldateien bieten keine automatische Auswertung oder Live-Feedback. Sie sind als Übungs- und Nachschlagewerk gedacht. Für interaktives Lernen nutze die Playgrounds! 
+
+## Setup
+
+1. **Repository klonen:**
+   ```
+   git clone https://github.com/tibo47-161/LearningByDoing.git
+   cd LearningByDoing
+   ```
+2. **(Optional) Live Server für Playgrounds:**
+   - Installiere die VS Code Extension „Live Server“ oder nutze einen beliebigen lokalen Webserver.
+   - Alternativ: Öffne die HTML-Dateien direkt im Browser (Doppelklick).
+3. **Python-Terminal-Modul:**
+   - Stelle sicher, dass Python installiert ist (`python --version`).
+   - Starte das Skript wie in der Anleitung oben beschrieben.
+
+## Nutzungsbeispiele
+
+### Interaktiver Playground (z.B. TypeScript)
+1. Öffne `LEARNING-SYSTEM/typescript-playground.html` im Browser.
+2. Wähle eine Aufgabe aus, schreibe deinen TypeScript-Code in den Editor.
+3. Klicke auf „Ausführen“ und erhalte sofort Feedback.
+4. Klicke auf „Lösung anzeigen“, wenn du nicht weiterkommst.
+
+### Klassische Moduldatei (z.B. Java)
+1. Öffne `java/basics/JavaBasics.java` in deiner IDE (z.B. IntelliJ, Eclipse).
+2. Lies die Aufgabenstellung im Code und schreibe deine Lösung in die vorgesehenen Bereiche.
+3. Führe das Programm in der IDE aus, um deine Lösung zu testen.
+
+## Screenshots (Platzhalter)
+
+> Hier kannst du eigene Screenshots der Playgrounds und Module einfügen, z.B.:
+>
+> ![TypeScript Playground Screenshot](./docs/screenshots/typescript-playground.png)
+> ![SQL Playground Screenshot](./docs/screenshots/sql-playground.png)
+> ![Java Modul Screenshot](./docs/screenshots/java-basics.png) 
