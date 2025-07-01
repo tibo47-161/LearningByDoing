@@ -54,3 +54,33 @@
 ## Hinweise
 - Dein Fortschritt wird automatisch gespeichert (wo unterstützt)
 - Für Fragen oder Erweiterungen: Siehe Implementierungsanweisung 
+
+## Bedienungsanleitung für klassische Moduldateien
+
+Neben den interaktiven Playgrounds gibt es klassische Moduldateien, die als Übungs- und Referenzdateien dienen. So nutzt du sie:
+
+- **Java (`java/basics/JavaBasics.java`):**
+  - Öffne die Datei in deiner Java-IDE (z.B. IntelliJ, Eclipse, VS Code mit Java-Extension).
+  - Lies die Kommentare und Aufgabenstellungen im Code.
+  - Schreibe deine Lösungen direkt in die vorgesehenen Bereiche.
+  - Führe das Programm in der IDE aus, um deine Lösungen zu testen.
+
+- **TypeScript (`typescript/basics/01_typescript_basics.ts`):**
+  - Öffne die Datei in einem Editor oder einer IDE mit TypeScript-Unterstützung.
+  - Bearbeite die Aufgaben im Code.
+  - Kompiliere die Datei mit `tsc` oder führe sie mit einem Online-TS-Playground aus.
+
+- **SQL (`sql/basics/01_sql_basics.sql`):**
+  - Öffne die Datei in einem SQL-Editor oder einer Datenbank-IDE (z.B. DBeaver, DataGrip, Online-SQL-Editor).
+  - Arbeite die Aufgaben von oben nach unten durch und führe die SQL-Befehle in einer Testdatenbank aus.
+
+- **React-Komponenten (`react/components/`, `react/examples/`):**
+  - Öffne die Dateien in einer IDE mit React-Unterstützung.
+  - Lies die Kommentare und probiere die Komponenten im Kontext einer React-App aus.
+  - Passe die Komponenten nach Bedarf an oder nutze sie als Vorlage.
+
+- **Tailwind CSS Beispiele (`tailwind/examples/`, `LEARNING-SYSTEM/tailwind-examples/`):**
+  - Öffne die HTML-Dateien im Browser.
+  - Experimentiere mit den Utility-Klassen direkt im Code.
+
+> **Hinweis:** Diese klassischen Moduldateien bieten keine automatische Auswertung oder Live-Feedback. Sie sind als Übungs- und Nachschlagewerk gedacht. Für interaktives Lernen nutze die Playgrounds! 
